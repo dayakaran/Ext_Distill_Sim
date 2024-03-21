@@ -120,7 +120,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
                     
                 counter += 1   
                 if counter > 200:
-                    return x_comp, y_comp, "Too many iterations > 200"
+                    return x_comp, y_comp, "Too many stages > 200"
 
                 x_comp.append(x1)
                 y_comp.append(y1)
@@ -145,7 +145,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
                 if np.isclose(x1, fixed_points, atol=0.001).any():
                     return x_comp, y_comp, "Infinite Stages"
                 if counter > 200:
-                    return x_comp, y_comp, "Too many iterations > 200"
+                    return x_comp, y_comp, "Too many stages > 200"
 
                 x_comp.append(x1)
                 y_comp.append(y1)
@@ -204,7 +204,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         ax.scatter(self.x_s_fixed, self.y_s_fixed, s=50, c="red")
         x_fixed, y_fixed, N_1 = self.compute_equib_stages_binary(0, self.x_s_fixed)
 
-        ax.plot(x_fixed, y_fixed, linestyle='--', color='black', alpha = 0.3)        
+        ax.plot(x_fixed, y_fixed, linestyle='--', color='red', alpha = 0.3)        
         ax.scatter(self.x_s_fixed, self.y_s_fixed, s=50, c="red")
 
         # Plot fixed point along the x - axis and the stagewise composition
@@ -226,18 +226,13 @@ class DistillationModelBinary(DistillationModelSingleFeed):
 
         return 
     
-    def plot_distil_rect_binary(self, ax, zoom_factor=0, rect_title = "Rectifying Section"):
+    def plot_distil_rect_binary(self, ax, rect_title = "Rectifying Section"):
 
         if self.num_comp != 2:
             raise ValueError("This method can only be used for binary distillation.")
         
-        # Set limits for ax
-        if (zoom_factor == 0):
-            ax.set_xlim([0,1])
-            ax.set_ylim([-0.05,1.05])
-        else:
-            ax.set_xlim([0.72,0.82])
-            ax.set_ylim([0.80,0.90])
+        ax.set_xlim([0,1])
+        ax.set_ylim([-0.05,1.05])
 
         #Plot the equilibrium curve
         ax.plot(self.x_array_equib[:, 0], self.y_array_equib[:, 0])
@@ -265,7 +260,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         self.x_r_fixed, self.y_r_fixed = self.find_rect_fixedpoints_binary(n=30)
         
         x_stages, y_stages, N_2 = self.compute_equib_stages_binary(1, self.x_r_fixed)
-        ax.plot(x_stages, y_stages, linestyle='--', color='black', alpha = 0.3)
+        ax.plot(x_stages, y_stages, linestyle='--', color='blue', alpha = 0.3)
         ax.scatter(self.x_r_fixed, self.y_r_fixed, s=50, c="red")
 
         # Plot fixed point along the x - axis and the stagewise composition
@@ -361,12 +356,12 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         x_stages, y_stages, N_2 = self.compute_equib_stages_binary(2, x_r_0 + x_s_0)
         
         if (op_color == 'green'):
-            ax.plot(x_stages, y_stages, linestyle='--', color='black', alpha = 0.3)
+            ax.plot(x_stages, y_stages, linestyle='--', color='green', alpha = 0.3)
         else:
             xr_stages, yr_stages, N_r = self.compute_equib_stages_binary(1, self.x_r_fixed)
-            ax.plot(xr_stages, yr_stages, linestyle='--', color='black', alpha = 0.3)
+            ax.plot(xr_stages, yr_stages, linestyle='--', color='blue', alpha = 0.3)
             xs_stages, ys_stages, N_s = self.compute_equib_stages_binary(0, self.x_s_fixed)
-            ax.plot(xs_stages, ys_stages, linestyle='--', color='black', alpha = 0.3)
+            ax.plot(xs_stages, ys_stages, linestyle='--', color='red', alpha = 0.3)
 
         ax.scatter(x_r_0 + x_s_0, y_r_0 + y_s_0, s=100, c="red")
 

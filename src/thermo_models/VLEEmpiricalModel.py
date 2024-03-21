@@ -1,6 +1,7 @@
 import os, sys
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 from scipy.optimize import fsolve
 from typing import Callable
 import random as rand
@@ -30,18 +31,18 @@ class VLEEmpiricalModelBinary(VLEModel):
         self.func_xtoy = func_xtoy
 
 
-    def convert_x_to_y(self, x_array: np.ndarray):
+    def convert_x_to_y(self, x: float):
         """Converts x to y using the provided function.
 
         Args:
-            x_array (float): Mole fraction in the liquid phase.
+            x (float): Mole fraction in the liquid phase.
 
         Returns:
             solution (float): Mole fraction in the vapor phase.
             message (str): Informational message.
         """
-        x = x_array[0]
-        solution = self.func_xtoy(x_array)
+
+        solution = self.func_xtoy(x)
         return solution, "Does not use a solver"
     
     def convert_y_to_x(self, y_array: np.ndarray, x_guess: float = None):
@@ -81,34 +82,28 @@ class VLEEmpiricalModelBinary(VLEModel):
 
         raise ValueError("fsolve failed to find a solution")
     
-    def plot_binary_yx(self, data_points: int = 100, comp_id:int = 0) -> None:
+    def plot_binary_yx(self, data_points: int = 100) -> None:
         """Plot the Vapor-Liquid Equilibrium (VLE) y-x diagram for a binary mixture.
 
         Args:
             data_points (int, optional): Number of data points to generate for the plot. Defaults to 100.
-            comp_id (int, optional): Component id (0 or 1) for which the diagram should be plotted. Defaults to 0.
 
         Raises:
             ValueError: If comp_id is not 0 or 1.
         """
-        if comp_id not in [0, 1]:
-            raise ValueError("comp_id must be either 0 or 1")
 
         x_space = np.linspace(0,1,data_points)
         y_space = [self.convert_x_to_y(x)[0] for x in x_space]
 
-        # Adjust for comp_id = 1
-        if comp_id == 1:
-            x_space = 1 - x_space
-            y_space = 1 - np.array(y_space)
-
-        plt.figure(figsize=(8,6))
-        plt.plot(x_space, y_space, label="y vs x")
-        plt.xlabel(f"Component {comp_id} mole fraction in liquid phase, x")
-        plt.ylabel(f"Component {comp_id} mole fraction in vapor phase, y")
-        plt.title("Vapor-Liquid Equilibrium (VLE) y-x Diagram")
-        plt.grid(True)
-        plt.legend()
+        x_axis = np.linspace(0,1,1000)
+        
+        fig, ax = plt.subplots(figsize=(6,5))
+        ax.plot(x_space, y_space, label="y vs x")
+        ax.plot(x_axis, x_axis, color = 'k', linestyle = '--', label = '45° Line')
+        ax.set_xlabel("Mole fraction in liquid phase, x", fontsize = 16)
+        ax.set_ylabel("Mole fraction in vapor phase, y" , fontsize = 16)
+        plt.title("Vapor-Liquid Equilibrium (VLE) y-x Diagram", fontsize = 16)
+        ax.legend(loc = 'best')
         plt.show()
     
 

@@ -16,6 +16,8 @@ import random as rand
 from utils.AntoineEquation import *
 from distillation.DistillationSingleFeed import DistillationModelSingleFeed
 
+sns.set_context('talk')
+
 class DistillationModelTernary(DistillationModelSingleFeed):
 
     def __init__(self, thermo_model:VLEModel, xF: np.ndarray, xD: np.ndarray, xB: np.ndarray, reflux = None, boil_up = None, q = 1) -> None:
@@ -91,7 +93,7 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         # Plot the line connecting the points
         ax.plot(x_rect_comp[:-1, 0], x_rect_comp[:-1, 1], '-D', label='Rectifying Line', color = "#e41a1c")  # '-D' means a line with diamond markers at each data point
         ax.plot( x_strip_comp[:-1, 0],  x_strip_comp[:-1, 1], '-s', label='Stripping Line', color = "#377eb8")  # '-s' means a line with box markers at each data point
-        ax.plot( x_rect_comp[-1, 0],  x_rect_comp[-1, 1], '*', label='Operating Section Terminus', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
+        ax.plot( x_rect_comp[-1, 0],  x_rect_comp[-1, 1], '*', label='OL Terminus', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
         ax.plot( x_strip_comp[-1, 0],  x_strip_comp[-1, 1], '*', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
 
         # Mark special points
@@ -109,7 +111,7 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad = 10)
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
         
-        ax.legend(loc = 'upper right')
+        ax.legend(loc = 'upper right', fontsize = 12)
 
 
     def plot_strip_comp(self, ax: axes):
@@ -133,7 +135,7 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad = 10)
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
         
-        ax.legend(loc='upper right')
+        ax.legend(loc='upper right', fontsize = 12)
 
 
     def plot_rect_comp(self, ax: axes):
@@ -142,7 +144,7 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         
         # Plot the line connecting the points
         ax.plot(x_rect_comp[:-1, 0], x_rect_comp[:-1, 1], '-D', label='Rectifying Line', color = "#e41a1c")  # '-D' means a line with diamond markers at each data point
-        ax.plot( x_rect_comp[-1, 0],  x_rect_comp[-1, 1], '*', label='Operating Section Terminus', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
+        ax.plot( x_rect_comp[-1, 0],  x_rect_comp[-1, 1], '*', label='OL Terminus', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
         
         # Mark special points
         ax.scatter(self.xF[0], self.xF[1], marker='X', color='#ff7f00', label='xF', s = 100)
@@ -158,6 +160,26 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad = 10)
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
         
-        ax.legend(loc = 'upper right')
+        ax.legend(loc = 'upper right', fontsize = 12)
 
    
+    def plot_mb(self, ax: axes):
+
+        # Mark special points
+        ax.scatter(self.xF[0], self.xF[1], marker='X', color='#ff7f00', label='xF', s = 100)
+        ax.scatter(self.xB[0], self.xB[1], marker='X', color='#984ea3', label='xB', s = 100)
+        ax.scatter(self.xD[0], self.xD[1], marker='X', color='#4daf4a',  label='xD', s = 100)
+
+        ax.plot([self.xB[0], self.xD[0]], [self.xB[1], self.xD[1]], color = '#2b8cbe', linestyle = 'dashed')  # Diagonal dashed line
+        
+        ax.set_aspect('equal', adjustable='box')
+        ax.set_ylim([-0.05, 1.05])
+        ax.set_xlim([-0.05, 1.05])
+        ax.plot([1, 0], [0, 1], 'k--')  # Diagonal dashed line
+        ax.hlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
+        ax.vlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
+        
+        ax.set_xlabel(self.thermo_model.comp_names[0], labelpad = 10)
+        ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
+        
+        ax.legend(loc = 'best', fontsize = 12)

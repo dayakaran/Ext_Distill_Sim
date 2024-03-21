@@ -11,10 +11,13 @@ sys.path.append(PROJECT_ROOT)
 from thermo_models.VLEModelBaseClass import *
 import matplotlib.pyplot as plt 
 from matplotlib import axes
+import seaborn as sns
 import random as rand
 from utils.AntoineEquation import *
 from thermo_models.RaoultsLawModel import *
 from distillation.DistillationModel import DistillationModel
+
+sns.set_context('talk')
 
 class DistillationModelDoubleFeed(DistillationModel):
     
@@ -129,7 +132,7 @@ class DistillationModelDoubleFeed(DistillationModel):
 
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad = 10)
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
-        ax.legend(loc = 'upper right')
+        ax.legend(loc = 'upper right', fontsize = 12)
 
         
     def compute_rectifying_stages(self):
@@ -268,7 +271,7 @@ class DistillationModelDoubleFeed(DistillationModel):
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad=10)
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
         
-        ax.legend()
+        ax.legend(fontsize = 12)
 
 
     def plot_middle_comp(self, ax: axes, middle_start):
@@ -297,7 +300,7 @@ class DistillationModelDoubleFeed(DistillationModel):
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad=10)
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
         
-        ax.legend()
+        ax.legend(fontsize = 12)
 
         
     def compute_equib_stages(self, ax_num, fixed_points = []):
@@ -313,3 +316,26 @@ class DistillationModelDoubleFeed(DistillationModel):
         FL_B = (self.xD[0]-self.xB[0])/(self.Fr*(self.xD[0]-self.xFU[0])+self.xD[0]-self.xFL[0])
         self.boil_up = ((self.reflux+1)*D_B)+(FL_B*(self.Fr*(self.qU-1))+(self.qL-1))
         return self
+
+
+       
+    def plot_mb(self, ax: axes):
+
+        # Mark special points
+        ax.scatter(self.zF[0], self.zF[1], marker='X', color='#ff7f00', label='xF', s = 100)
+        ax.scatter(self.xB[0], self.xB[1], marker='X', color='#984ea3', label='xB', s = 100)
+        ax.scatter(self.xD[0], self.xD[1], marker='X', color='#4daf4a',  label='xD', s = 100)
+
+        ax.plot([self.xB[0], self.xD[0]], [self.xB[1], self.xD[1]], color = '#2b8cbe', linestyle = 'dashed')  # Diagonal dashed line
+        
+        ax.set_aspect('equal', adjustable='box')
+        ax.set_ylim([-0.05, 1.05])
+        ax.set_xlim([-0.05, 1.05])
+        ax.plot([1, 0], [0, 1], 'k--')  # Diagonal dashed line
+        ax.hlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
+        ax.vlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
+        
+        ax.set_xlabel(self.thermo_model.comp_names[0], labelpad = 10)
+        ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
+        
+        ax.legend(loc = 'best', fontsize = 12)
