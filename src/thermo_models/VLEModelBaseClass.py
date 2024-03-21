@@ -1,4 +1,4 @@
-Aimport numpy as np
+import numpy as np
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 import random as rand
