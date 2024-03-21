@@ -48,8 +48,8 @@ class PhasePortraits():
         valid_vectors = np.array([vectors[i] for i in range(len(vectors)) if valid_points[i]])
         
         magnitudes = np.linalg.norm(valid_vectors, axis=1)
-        norm = plt.Normalize(vmin=magnitudes.min(), vmax=magnitudes.max())
-        cmap = plt.cm.viridis
+        norm       = plt.Normalize(vmin=magnitudes.min(), vmax=magnitudes.max())
+        cmap       = sns.color_palette("light:b", as_cmap=True)
 
         for point, vector in zip(valid_x_array, valid_vectors):
             

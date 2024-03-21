@@ -1,4 +1,4 @@
-import numpy as np
+Aimport numpy as np
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 import random as rand
@@ -419,6 +419,7 @@ class VLEModel:
         
     # group of functions used for jacobian calculations
     def jacobian_x_to_y(self, uvec, xvec):
+
         gammas_ders = self.get_gamma_ders(np.concatenate((xvec, np.array([uvec[-1]]))), l=0) # l is dummy value
         gammas = self.get_activity_coefficient(xvec, uvec[-1])
         jac = np.empty((self.num_comp+1, self.num_comp+1))
@@ -435,6 +436,7 @@ class VLEModel:
 
 
     def jacobian_y_to_x(self, uvec, yvec):
+        
         gammas_ders = self.get_gamma_ders(uvec, l=0) # l is dummy value
         gammas = self.get_activity_coefficient(uvec[:-1], uvec[-1])
         jac = np.empty((self.num_comp+1, self.num_comp+1))

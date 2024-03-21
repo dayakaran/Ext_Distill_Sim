@@ -131,21 +131,25 @@ class DistillationModelSingleFeed:
             t_array[i] = solution[-1]
             
         return x_array, y_array, t_array
-    
+
+    '''
     def change_r(self, new_r):
 
         self.reflux = new_r
         self.boil_up = ((self.reflux+self.q)*((self.xF[0]-self.xB[0])/(self.xD[0]-self.xF[0]))) + self.q - 1
-        return self
-        
+    '''
+    
     def set_xD(self, xD_new):
         self.xD = xD_new
+        self.boil_up = ((self.reflux+self.q)*((self.xF[0]-self.xB[0])/(self.xD[0]-self.xF[0]))) + self.q - 1
     
     def set_xB(self, xB_new):
         self.xB = xB_new
-
+        self.boil_up = ((self.reflux+self.q)*((self.xF[0]-self.xB[0])/(self.xD[0]-self.xF[0]))) + self.q - 1
+        
     def set_xF(self, xF_new):
         self.xF = xF_new
+        self.boil_up = ((self.reflux+self.q)*((self.xF[0]-self.xB[0])/(self.xD[0]-self.xF[0]))) + self.q - 1
         
     def set_r(self, r_new):
 
@@ -267,7 +271,7 @@ class DistillationModelSingleFeed:
             
     def track_fixed_points_branch_stripping(self, ds, num_steps, x0, l0):
         def s(r):
-            self.change_r(r)
+            self.set_r(r)
             return self.boil_up
         
         def eqns(uvec, l):
