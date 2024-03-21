@@ -88,7 +88,7 @@ class AntoineEquationBaseE:
         Returns:
             np.ndarray: The calculated saturation pressure(s).
         """
-        return math.exp((self.A - self.B/(Temp + self.C)))
+        return math.exp((self.A - self.B/(temp + self.C)))
 
     def get_temperature(self, partial_pressure: np.ndarray):
         """
