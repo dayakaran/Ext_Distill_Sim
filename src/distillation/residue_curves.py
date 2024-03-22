@@ -49,14 +49,15 @@ class PhasePortraits():
         
         magnitudes = np.linalg.norm(valid_vectors, axis=1)
         norm       = plt.Normalize(vmin=magnitudes.min(), vmax=magnitudes.max())
-        cmap       = sns.color_palette("light:b", as_cmap=True)
-
+        cmap       = sns.color_palette("icefire", as_cmap=True)
+        
         for point, vector in zip(valid_x_array, valid_vectors):
             
             # Correct color mapping for each vector
             vector_magnitude = np.linalg.norm(vector)
-            color = cmap(norm(vector_magnitude))
+            color            = cmap(norm(vector_magnitude))
             ax.quiver(point[0], point[1], vector[0], vector[1], color=color)
+            
 
         # Set the limits and title for your plot
         ax.set_xlim(-0.05, 1.05)
@@ -155,7 +156,7 @@ class PhasePortraits():
         cmap = plt.cm.magma
         heatmap = ax.imshow(grid_z.T, extent=(0, 1, 0, 1), origin='lower', cmap=cmap, vmin=percentile_10, vmax=percentile_90)
         plt.colorbar(heatmap, ax=ax)  # Show the color scale for the heatmap
-        ax.set_title("Residue Topography Curve")
+        ax.set_title("Phase potrait")
         ax.set_xlabel('x1')
         ax.set_ylabel('x2')
     
