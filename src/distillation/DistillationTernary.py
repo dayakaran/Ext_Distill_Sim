@@ -91,8 +91,8 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         x_strip_comp = self.compute_stripping_stages()[0]
                 
         # Plot the line connecting the points
-        ax.plot(x_rect_comp[:-1, 0], x_rect_comp[:-1, 1], '-D', label='Rectifying Line', color = "#e41a1c")  # '-D' means a line with diamond markers at each data point
-        ax.plot( x_strip_comp[:-1, 0],  x_strip_comp[:-1, 1], '-s', label='Stripping Line', color = "#377eb8")  # '-s' means a line with box markers at each data point
+        ax.plot(x_rect_comp[:-1, 0], x_rect_comp[:-1, 1], '-D', label='Rectifying Line', color = "#e41a1c", markersize = 6)  # '-D' means a line with diamond markers at each data point
+        ax.plot( x_strip_comp[:-1, 0],  x_strip_comp[:-1, 1], '-s', label='Stripping Line', color = "#377eb8", markersize = 6)  # '-s' means a line with box markers at each data point
         ax.plot( x_rect_comp[-1, 0],  x_rect_comp[-1, 1], '*', label='OL Terminus', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
         ax.plot( x_strip_comp[-1, 0],  x_strip_comp[-1, 1], '*', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
 
@@ -118,7 +118,7 @@ class DistillationModelTernary(DistillationModelSingleFeed):
 
         x_strip_comp = self.compute_stripping_stages()[0]
                 
-        ax.plot( x_strip_comp[:-1, 0],  x_strip_comp[:-1, 1], '-s', label='Stripping Line', color = "#377eb8")  # '-s' means a line with box markers at each data point
+        ax.plot( x_strip_comp[:-1, 0],  x_strip_comp[:-1, 1], '-s', label='Stripping Line', color = "#377eb8", markersize = 6)  # '-s' means a line with box markers at each data point
         ax.plot( x_strip_comp[-1, 0],  x_strip_comp[-1, 1], '*', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
 
         # Mark special points
@@ -143,7 +143,7 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         x_rect_comp  = self.compute_rectifying_stages()[0]
         
         # Plot the line connecting the points
-        ax.plot(x_rect_comp[:-1, 0], x_rect_comp[:-1, 1], '-D', label='Rectifying Line', color = "#e41a1c")  # '-D' means a line with diamond markers at each data point
+        ax.plot(x_rect_comp[:-1, 0], x_rect_comp[:-1, 1], '-D', label='Rectifying Line', color = "#e41a1c", markersize = 6)  # '-D' means a line with diamond markers at each data point
         ax.plot( x_rect_comp[-1, 0],  x_rect_comp[-1, 1], '*', label='OL Terminus', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
         
         # Mark special points

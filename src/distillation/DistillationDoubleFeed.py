@@ -121,7 +121,7 @@ class DistillationModelDoubleFeed(DistillationModel):
         x2_rect = x_rect_comp[:, 1]
 
         # Plot the line connecting the points
-        ax.plot(x1_rect, x2_rect, '-D', label='Rectifying Line', color = "#e41a1c")  # '-o' means a line with circle markers at each data point
+        ax.plot(x1_rect, x2_rect, '-D', label='Rectifying Line', color = "#e41a1c", markersize = 6)  # '-o' means a line with circle markers at each data point
         ax.set_aspect('equal', adjustable='box')
         ax.set_ylim([-0.05, 1.05])
         ax.set_xlim([-0.05, 1.05])
@@ -155,8 +155,8 @@ class DistillationModelDoubleFeed(DistillationModel):
             x_comp.append(x2)  
             y_comp.append(y2)
             
-            if counter == 100000:
-                print("counter rect:", counter)
+            if counter == 200:
+                print("Too many stages: R OL:", counter)
                 return np.array(x_comp), np.array(y_comp)
             if np.linalg.norm(x1 - x2) < 0.0000001:
                 return np.array(x_comp), np.array(y_comp)
@@ -183,8 +183,8 @@ class DistillationModelDoubleFeed(DistillationModel):
             x_comp.append(x2)  # Should this be x2 or x1 - was x1 before
             y_comp.append(y2)
             
-            if counter == 100:
-                print("counter strip:", counter)
+            if counter == 200:
+                print("Too many stages: SOL", counter)
                 return np.array(x_comp), np.array(y_comp)
             if np.linalg.norm(x1 - x2) < 0.0000000001:
                 return np.array(x_comp), np.array(y_comp)
@@ -220,8 +220,8 @@ class DistillationModelDoubleFeed(DistillationModel):
             x_comp.append(x2) # Should this be x1 or x2 ?
             y_comp.append(y2)
                         
-            if counter == 100:
-                print("counter middle:", counter)
+            if counter == 200:
+                print("Too many stages : MS OL:", counter)
                 return np.array(x_comp), np.array(y_comp)
             if np.linalg.norm(x1 - x2) < 0.0000000001:
                 return np.array(x_comp), np.array(y_comp)
@@ -248,16 +248,16 @@ class DistillationModelDoubleFeed(DistillationModel):
         x2_middle = x_middle_comp[:,1]
         
         # Plot the line connecting the points
-        ax.plot(x1_rect, x2_rect, '-D', label='Rectifying Line', color = "#e41a1c")  
-        ax.plot(x1_strip, x2_strip, '-s', label='Stripping Line', color = "#377eb8")  
-        ax.plot(x1_middle, x2_middle, '-s', label='Middle Section', color = "#4daf4a") 
+        ax.plot(x1_rect, x2_rect, '-D', label='R OL', color = "#e41a1c", markersize = 6)  
+        ax.plot(x1_strip, x2_strip, '-s', label='S OL', color = "#377eb8", markersize = 6)  
+        ax.plot(x1_middle, x2_middle, '-s', label='MS OL', color = "#4daf4a", markersize = 6) 
 
         # Mark special points
-        ax.scatter(self.xF[0], self.xF[1], marker='x', color='orange', label='xF', s = 100)
-        ax.scatter(self.xB[0], self.xB[1], marker='x', color='purple', label='xB', s = 100)
-        ax.scatter(self.xD[0], self.xD[1], marker='x', color='green', label='xD', s = 100)
-        ax.scatter(self.xFL[0], self.xFL[1], marker='x', color='black', label='xFL', s = 100)
-        ax.scatter(self.xFU[0], self.xFU[1], marker='x', color='blue', label='xFU', s = 100)
+        #ax.scatter(self.xF[0], self.xF[1], marker='x', color='orange', label='xF', s = 100)
+        #ax.scatter(self.xB[0], self.xB[1], marker='x', color='purple', label='xB', s = 100)
+        #ax.scatter(self.xD[0], self.xD[1], marker='x', color='green', label='xD', s = 100)
+        #ax.scatter(self.xFL[0], self.xFL[1], marker='x', color='black', label='xFL', s = 100)
+        #ax.scatter(self.xFU[0], self.xFU[1], marker='x', color='blue', label='xFU', s = 100)
         
         ax.set_aspect('equal', adjustable='box')
 
@@ -274,6 +274,31 @@ class DistillationModelDoubleFeed(DistillationModel):
         ax.legend(fontsize = 12)
 
 
+    def plot_strip_comp(self, ax: axes):
+
+        x_strip_comp = self.compute_stripping_stages()[0]
+
+        #Extract x1 and x2 from arrays
+        x1_strip  = x_strip_comp[:, 0]
+        x2_strip  = x_strip_comp[:, 1]
+        
+        # Plot the line connecting the points
+        ax.plot(x1_strip, x2_strip, '-s', label='S OL', color = "#377eb8", markersize = 6)  
+
+        ax.set_aspect('equal', adjustable='box')
+
+        ax.set_ylim([-0.05, 1.05])
+        ax.set_xlim([-0.05, 1.05])
+
+        ax.plot([1, 0], [0, 1], 'k--')  # Diagonal dashed line
+        ax.hlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
+        ax.vlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
+        
+        ax.set_xlabel(self.thermo_model.comp_names[0], labelpad=10)
+        ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
+        
+        ax.legend(fontsize = 12)
+
     def plot_middle_comp(self, ax: axes, middle_start):
 
         middle_start = (2*middle_start - 1) #This is just to make the indexing work
@@ -284,7 +309,7 @@ class DistillationModelDoubleFeed(DistillationModel):
         x2_middle = x_middle_comp[:,1]
         
         # Plot the line connecting the points
-        ax.plot(x1_middle, x2_middle, '-s', label='Middle Section', color = "#4daf4a") 
+        ax.plot(x1_middle, x2_middle, '-s', label='Middle Section', color = "#4daf4a", markersize = 6) 
 
         # Mark special points
         
@@ -317,7 +342,6 @@ class DistillationModelDoubleFeed(DistillationModel):
         self.boil_up = ((self.reflux+1)*D_B)+(FL_B*(self.Fr*(self.qU-1))+(self.qL-1))
         return self
 
-
        
     def plot_mb(self, ax: axes):
 
@@ -325,8 +349,11 @@ class DistillationModelDoubleFeed(DistillationModel):
         ax.scatter(self.zF[0], self.zF[1], marker='X', color='#ff7f00', label='xF', s = 100)
         ax.scatter(self.xB[0], self.xB[1], marker='X', color='#984ea3', label='xB', s = 100)
         ax.scatter(self.xD[0], self.xD[1], marker='X', color='#4daf4a',  label='xD', s = 100)
+        ax.scatter(self.xFL[0], self.xFL[1], marker='X', color='#66c2a5', label='xFL', s = 100)
+        ax.scatter(self.xFU[0], self.xFU[1], marker='X', color='#fc8d62', label='xFU', s = 100)
 
         ax.plot([self.xB[0], self.xD[0]], [self.xB[1], self.xD[1]], color = '#2b8cbe', linestyle = 'dashed')  # Diagonal dashed line
+        ax.plot([self.xFL[0], self.xFU[0]], [self.xFL[1], self.xFU[1]], color = '#8da0cb', linestyle = 'dashed')  # Diagonal dashed line
         
         ax.set_aspect('equal', adjustable='box')
         ax.set_ylim([-0.05, 1.05])
