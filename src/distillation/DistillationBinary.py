@@ -369,7 +369,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         ax.scatter(x_rect, [0]*len(x_rect), marker='o', color='blue', facecolors='none', edgecolors='blue', linewidths = 0.75, s = 40)
         x_strip = self.compute_equib_stages_binary(0, x_r_0 + x_s_0)[0]
         ax.scatter(x_strip, [0]*len(x_strip), marker = '^', color = 'blue', facecolors='none', edgecolors='blue', linewidths = 0.75, s = 40)
-        ax.text(0.5, 0.9, f"# Stages: {N_2}", ha='center', va='center', transform=ax.transAxes, fontsize = 16)
+        ax.text(0.5, 0.9, f"No Stages: {N_2}", ha='center', va='center', transform=ax.transAxes, fontsize = 16)
       
         ax.scatter(self.x_r_fixed, [0]*len(self.x_r_fixed), marker='o', color='red', s = 50)
         ax.scatter(self.x_s_fixed, [0]*len(self.x_s_fixed), marker='o', color='red', s = 50)

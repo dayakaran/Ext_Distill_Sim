@@ -25,6 +25,7 @@ class PhasePortraits():
         self.thermo_model = thermo_model
 
 
+        
     def plot_phase_vector_fields(self, ax, dxdt, grid_data_points=20, title = 'Phase Vector Field with Magnitude Colored Arrows'):
         
         x_array = [np.array(point) for point in create_restricted_simplex_grid(3, grid_data_points)]
@@ -33,7 +34,7 @@ class PhasePortraits():
 
         for i, x in enumerate(x_array):
             try:
-                vector = dxdt(None, x)
+                vector = dxdt(x)
                 vectors[i] = vector[:2]
                 if not (np.isinf(vectors[i]).any() or np.isnan(vectors[i]).any()):
                     valid_points.append(True)
@@ -47,9 +48,9 @@ class PhasePortraits():
         valid_x_array = [x for i, x in enumerate(x_array) if valid_points[i]]
         valid_vectors = np.array([vectors[i] for i in range(len(vectors)) if valid_points[i]])
         
-        magnitudes = np.linalg.norm(valid_vectors, axis=1)
-        norm       = plt.Normalize(vmin=magnitudes.min(), vmax=magnitudes.max())
-        cmap       = sns.color_palette("icefire", as_cmap=True)
+        magnitudes    = np.linalg.norm(valid_vectors, axis=1)
+        norm          = plt.Normalize(vmin=magnitudes.min(), vmax=magnitudes.max())
+        cmap          = sns.color_palette("icefire", as_cmap=True)
         
         for point, vector in zip(valid_x_array, valid_vectors):
             
@@ -58,7 +59,6 @@ class PhasePortraits():
             color            = cmap(norm(vector_magnitude))
             ax.quiver(point[0], point[1], vector[0], vector[1], color=color)
             
-
         # Set the limits and title for your plot
         ax.set_xlim(-0.05, 1.05)
         ax.set_ylim(-0.05, 1.05)
@@ -76,9 +76,10 @@ class PhasePortraits():
         
         
     def plot_vector_field_strip(self, ax, grid_data_points=20):
-        def dxdt(t, x):
+        def dxdt(x):
             try:
-                return self.distil_model.stripping_step_xtoy(x_s_j=x) - self.thermo_model.convert_x_to_y(x_array=x)[0][:-1]
+                #return self.distil_model.stripping_step_xtoy(x_s_j=x) - self.thermo_model.convert_x_to_y(x_array=x)[0][:-1]
+                return  self.distil_model.stripping_step_ytox(self.thermo_model.convert_x_to_y (x)[0][:-1]) - x 
             except OverflowError:
                 print("Overflow occurred in dxdt.")
                 return None
@@ -87,9 +88,10 @@ class PhasePortraits():
 
         
     def plot_vector_field_rect(self, ax, grid_data_points=20):
-        def dxdt(t, x):
+        def dxdt(x):
             try:
-                return x - self.distil_model.rectifying_step_ytox(self.thermo_model.convert_x_to_y(x)[0][:-1])
+                #return x - self.distil_model.rectifying_step_ytox(self.thermo_model.convert_x_to_y(x)[0][:-1])
+                return self.thermo_model.convert_y_to_x ( self.distil_model.rectifying_step_xtoy(x) )[0][:-1] - x
             except OverflowError:
                 print("Overflow occurred in dxdt.")
                 return None
@@ -97,7 +99,7 @@ class PhasePortraits():
 
         
     def plot_vector_field_residue(self, ax, grid_data_points=20):
-        def dxdt(t, x):
+        def dxdt(x):
             try:
                 return x - self.thermo_model.convert_x_to_y(x_array=x)[0][:-1]
             except OverflowError:
@@ -111,9 +113,10 @@ class PhasePortraits():
             raise TypeError("Invalid operation")
         if not isinstance(self.distil_model, DistillationModelDoubleFeed):
             raise TypeError("Invalid operation")
-        def dxdt(t, x):
+        def dxdt(x):
             try:
-                return -self.distil_model.middle_step_x_to_y(x) + self.thermo_model.convert_x_to_y(x_array=x)[0][:-1]
+                #return -self.distil_model.middle_step_x_to_y(x) + self.thermo_model.convert_x_to_y(x_array=x)[0][:-1]
+                return  self.distil_model.middle_step_y_to_x(self.thermo_model.convert_x_to_y (x)[0][:-1]) - x 
             except OverflowError:
                 print("Overflow occurred in dxdt.")
                 return None
@@ -139,7 +142,7 @@ class PhasePortraits():
         points = np.array(x_array)[:, :2]
 
         # Scatter plot with enhanced contrast in color
-        value_array = np.array(value_array)
+        value_array   = np.array(value_array)
         percentile_10 = np.percentile(value_array, 10)
         percentile_90 = np.percentile(value_array, 90)
 
