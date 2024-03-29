@@ -632,68 +632,42 @@ class PhasePortraits():
 
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10) 
 
-    def int_plot_path(ax, initial, t_span, num_points, dxdt):
-
+    def int_plot_path(self, ax, initial, t_span, num_points, dxdt):
         """
-
         Plots an integrated path for a batch distillation process on a given Matplotlib axis.
-
         This function visualizes the integration path by plotting both a continuous line and directional arrows along the path.
-
         Arrows are added every 7 points to indicate the direction of progression, with their orientation reflecting the integration's direction
-
         (forward or reverse in time/heat).
-
         Args:
-
             ax (matplotlib.axes.Axes):
-
                 The Matplotlib axis object where the integrated path will be plotted.
-
             initial (np.array):
-
                 The initial composition or state from which to start the integration.
-
             t_span (tuple/list):
-
                 A 2-element sequence specifying the start and end points for the integration.
-
             num_points (int):
-
                 The number of points to generate along the integrated path.
-
             dxdt (function):
-
                 A function representing the differential equations to be integrated.
-
         """
 
         # Generate the path data using int_path
-
         path_data = self.int_path(initial, t_span, num_points, dxdt)
 
         # Determine the direction of time progression
-
         time_direction = np.sign(t_span[1] - t_span[0])
 
         # Plot arrows every 7 points along the path
-
         for i in range(0, len(path_data)-1, 7):
-
             dx = path_data[i+1][0] - path_data[i][0]
-
             dy = path_data[i+1][1] - path_data[i][1]
 
             # Reverse the arrow direction if time is going backwards
-
             if time_direction < 0:
-
                 dx, dy = -dx, -dy
-
             ax.arrow(path_data[i][0], path_data[i][1], dx, dy, head_width=0.02, head_length=0.02, fc='k', ec='k')
 
         # Plot the path as a red line
-
         ax.plot(path_data[:, 0], path_data[:, 1], color='red')
 
     def int_path(initial, t_span, num_points, dxdt):
