@@ -50,12 +50,6 @@ class MargulesModel(VLEModel):
 
                 part1 = np.sum(np.array( [A_[k, i] * x_array[i]**2 for i in range(self.num_comp) ]))
                 part2 = np.sum(np.array( [A_[i, k] * x_array[i]*x_array[k] for i in range(self.num_comp) ]))
-                                
-                '''
-                part1 = np.sum(A_[k, :] * x_array**2)
-                part2 = 2 * np.sum(A_[:, k] * x_array * x_array[k])
-                part3 = 2 * np.sum(np.sum(A_ * x_array.reshape(-1, 1) * (x_array.reshape(1, -1) ** 2), axis=1)) # Check if this is correct
-                '''
                 
                 result = np.exp((part1 + part2 - part3)/Temp)
                 gammas.append(result)
