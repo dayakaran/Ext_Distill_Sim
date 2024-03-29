@@ -20,11 +20,25 @@ sns.set_context("poster")
 sns.set_style("ticks")
 
 class DistillationModelBinary(DistillationModelSingleFeed):
-
     def __init__(self, thermo_model:VLEModel, xF: np.ndarray, xD: np.ndarray, xB: np.ndarray, reflux = None, boil_up = None, q = 1) -> None:
-
-        super().__init__(thermo_model,xF,xD,xB,reflux,boil_up,q)
+        """
+        DistillationModelBinary constructor 
+        This class is for simple binary distillations
+        Args:
+            thermo_model (VLEModel): Vapor-Liquid Equilibrium (VLE) model to be used in the distillation process.
+            xF (np.ndarray): Mole fraction of each component in the feed.
+            xD (np.ndarray): Mole fraction of each component in the distillate.
+            xB (np.ndarray): Mole fraction of each component in the bottom product.
+            reflux (Optional): Reflux ratio. If not provided, it will be calculated based on other parameters.
+            boil_up (Optional): Boil-up ratio. If not provided, it will be calculated based on other parameters.
+            q (float, optional): Feed condition (q) where q = 1 represents saturated liquid feed and q = 0 represents saturated vapor feed. Defaults to 1.
         
+        Raises:
+            ValueError: If the reflux, boil-up and q are not correctly specified. Only two of these parameters can be independently set.
+            With a defaul value for q=1, either boil_up or reflux should be specified and the other can be calculated.
+        """
+
+        super().__init__(thermo_model,xF,xD,xB,reflux,boil_up,q)     
         self.x_array_equib, self.y_array_equib, self.t_array = self.compute_equib() 
         
         # Initialize numpy arrays
@@ -32,6 +46,15 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         self.y_r_array = np.zeros((self.x_array_equib[:, 0].size, self.thermo_model.num_comp))
             
     def find_rect_fixedpoints_binary(self, n):
+        """
+        Method to calculate fixed points in the rectifying section.
+
+        Args:
+            n (int): number of steps toward convergence (typically use n=30)
+
+        Returns:
+            x0_values, y0_values (1d.array): Arrays for the liquid and vapor mole fractions of component 0 at the fixed points
+        """
 
         rand.seed(0)
         x0_values = []
@@ -63,6 +86,17 @@ class DistillationModelBinary(DistillationModelSingleFeed):
     
     
     def find_strip_fixedpoints_binary(self, n):
+        """
+        Method to calculate fixed points in the stripping section.
+
+        Args:
+            n (int): number of steps toward convergence (typically use n=30)
+
+        Returns:
+            x0_values, y0_values (1d.array): Arrays for the liquid and vapor mole fractions of
+            the most volatile component 0 at the fixed points
+        """
+
 
         rand.seed(0)
         x0_values = []
@@ -98,6 +132,23 @@ class DistillationModelBinary(DistillationModelSingleFeed):
 
 
     def compute_equib_stages_binary(self, ax_num, fixed_points = []):
+        """
+        Method to calculate the compositions at each stage in a binary distillation columm
+
+        Args:
+            ax_num (int): 0, 1, or 2 depending on the graph being analyzed
+            fixed_points (1d.array): List of liquid mole fractions at fixed points for component 0
+
+        Returns:
+            x_comp (1d.array): Array for the liquid mole fractions of component 0 at each stage
+            y_comp (1d.array): Array for the vapor mole fractions of component 0 at each stage
+            N (int): number of stages in the column
+
+        Raises:
+            ValueError: if mole fractions move outide of the physically real range [0,1]
+            ValueError: if the number of components is not 2
+            ValueError: if ax_num is not equal to 0, 1, or 2.
+        """
 
         ## ADD POINTS TO X AXIS TO REPRESENT NUMBER OF EQUILIBRIA ##
         if self.num_comp != 2:
@@ -169,6 +220,13 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         return x_comp, y_comp, N
     
     def plot_distil_strip_binary(self, ax):
+        """
+        Method to display the stripping section plot
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+        Returns:
+            The graphical output for a demo in interactive examples is produced
+        """
 
         # Set limits for all main plots
         ax.set_xlim([0,1])
@@ -227,6 +285,16 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         return 
     
     def plot_distil_rect_binary(self, ax, rect_title = "Rectifying Section"):
+        """
+        Method to display the rectifying section plot
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+            rect_title (string): title name
+        Returns:
+            The graphical output for a demo in interactive examples is produced
+        Raises:
+            ValueError: if the number of components is not 2
+        """
 
         if self.num_comp != 2:
             raise ValueError("This method can only be used for binary distillation.")
@@ -283,6 +351,15 @@ class DistillationModelBinary(DistillationModelSingleFeed):
 
         
     def plot_distil_binary(self, ax):
+        """
+        Method to display the full distillation column for binary mixtures
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+        Returns:
+            The graphical output for a demo in interactive examples is produced
+        Raises:
+            ValueError: if the number of components is not 2
+        """
 
         if self.num_comp != 2:
             raise ValueError("This method can only be used for binary distillation.")
