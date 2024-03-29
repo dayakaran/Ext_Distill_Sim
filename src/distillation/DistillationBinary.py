@@ -166,9 +166,12 @@ class DistillationModelBinary(DistillationModelSingleFeed):
                 if x1 > 1 or y1 > 1 or x1 < 0 or y1 < 0:
                     raise ValueError("Components out of range")
 
+                # Convergence stops occuring at tangent pinches
                 if np.isclose(x1, fixed_points, rtol=0.001).any():
                     return x_comp, y_comp, "Infinite Stages"
-                    
+
+                # This is equivalent to the McCabe-Thiele graphical method
+                # "Step" from leaving stages in equilibrium to the next point on operating line    
                 counter += 1   
                 if counter > 200:
                     return x_comp, y_comp, "Too many stages > 200"
@@ -235,13 +238,13 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         # Plot the x - axis
         ax.hlines(0, 0, 1, linewidth = 1, color = 'k', linestyle = 'dotted')
         
-        #Plot the equilibrium curve
+        # Plot the equilibrium curve
         ax.plot(self.x_array_equib[:, 0], self.y_array_equib[:, 0])
         
         for i, x1 in enumerate(self.x_array_equib):
             self.y_s_array[i] = self.stripping_step_xtoy(x1)
         
-        #Plot the stripping line
+        # Plot the stripping line
         s_min_index = int(1000 * self.xB[0])
         for i in range(len(self.y_s_array)):
             if (self.y_s_array[i,0] > self.y_array_equib[i,0]):
@@ -251,12 +254,11 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         ax.plot(self.x_array_equib[s_min_index:s_max_index, 0], self.y_s_array[s_min_index:s_max_index, 0], color = 'green')
 
         
-        #Plot y = x line
+        # Plot y = x line
         ax.plot([0,1], [0,1], linestyle='dashed')
-        
         ax.vlines(self.xB[0], 0, self.xB[0], linestyles = 'dashed', colors = 'k')
         
-        #Plot the fixed points from stripping line
+        # Plot the fixed points from stripping line
         self.x_s_fixed, self.y_s_fixed = self.find_strip_fixedpoints_binary(n=30)
 
         ax.scatter(self.x_s_fixed, self.y_s_fixed, s=50, c="red")
@@ -265,8 +267,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         ax.plot(x_fixed, y_fixed, linestyle='--', color='red', alpha = 0.3)        
         ax.scatter(self.x_s_fixed, self.y_s_fixed, s=50, c="red")
 
-        # Plot fixed point along the x - axis and the stagewise composition
-        
+        # Plot fixed point along the x - axis and the stagewise composition      
         ax.scatter(self.x_s_fixed, [0]*len(self.x_s_fixed), marker='o', color='red', s = 100)
         ax.scatter(x_fixed, [0]*len(x_fixed), marker='^', color='blue', facecolors='none', edgecolors='blue', linewidths = 0.75, s = 40)
         
@@ -302,7 +303,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         ax.set_xlim([0,1])
         ax.set_ylim([-0.05,1.05])
 
-        #Plot the equilibrium curve
+        # Plot the equilibrium curve
         ax.plot(self.x_array_equib[:, 0], self.y_array_equib[:, 0])
 
         # Plot the x - axis
@@ -313,7 +314,7 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         for i, x1 in enumerate(self.x_array_equib):
             self.y_r_array[i] = self.rectifying_step_xtoy(x1)
         
-        #Plot the rectifying line
+        # Plot the rectifying line
         r_max_index = int(1000 * self.xD[0])
         for i in range(len(self.y_r_array)):
             if (self.y_r_array[i,0] < self.y_array_equib[i,0]):
@@ -321,18 +322,17 @@ class DistillationModelBinary(DistillationModelSingleFeed):
                 break 
         ax.plot(self.x_array_equib[r_min_index:r_max_index, 0], self.y_r_array[r_min_index:r_max_index, 0], color = 'green')
         
-        #Plot y = x line
+        # Plot y = x line
         ax.plot([0,1], [0,1], linestyle='dashed')
 
-        #Plot the fixed points from stripping line
+        # Plot the fixed points from stripping line
         self.x_r_fixed, self.y_r_fixed = self.find_rect_fixedpoints_binary(n=30)
         
         x_stages, y_stages, N_2 = self.compute_equib_stages_binary(1, self.x_r_fixed)
         ax.plot(x_stages, y_stages, linestyle='--', color='blue', alpha = 0.3)
         ax.scatter(self.x_r_fixed, self.y_r_fixed, s=50, c="red")
 
-        # Plot fixed point along the x - axis and the stagewise composition
-        
+        # Plot fixed point along the x - axis and the stagewise composition     
         ax.scatter(self.x_r_fixed, [0]*len(self.x_r_fixed), marker='o', color='red', s = 100)
         ax.scatter(x_stages, [0]*len(x_stages), marker='^', color='blue', facecolors='none', edgecolors='blue', linewidths = 0.75, s = 40)
         ax.tick_params(axis='x', which='both', labelsize = 18, width = 2, length = 4)
@@ -409,15 +409,17 @@ class DistillationModelBinary(DistillationModelSingleFeed):
             if (self.y_s_array[i,0] > self.y_array_equib[i,0]):
                 s_max_index = i
                 break 
-
-        if (op_color == 'green'):
+            
+        # For valid columns with intersecting operating lines, make the segments after the intersection occurs be lighter in color
+        if (op_color == 'green'): # meaning the column params are valid
             for i in range(len(self.y_r_array)):
                 if (self.y_r_array[i,0] < self.y_s_array[i,0]): #find index where operating lines intersect
                     op_intersect_index = i
                     break 
+            # Partitiion the operating lines based on the intersection, increase line transparency
             ax.plot(self.x_array_equib[op_intersect_index:r_max_index, 0], self.y_r_array[op_intersect_index:r_max_index, 0], color = op_color)
             ax.plot(self.x_array_equib[s_min_index:op_intersect_index, 0], self.y_s_array[s_min_index:op_intersect_index, 0], color = op_color)  
-            ax.plot(self.x_array_equib[op_intersect_index:s_max_index, 0], self.y_s_array[op_intersect_index:s_max_index, 0], color = op_color, alpha = 0.3)
+            ax.plot(self.x_array_equib[op_intersect_index:s_max_index, 0], self.y_s_array[op_intersect_index:s_max_index, 0], color = op_color, alpha = 0.3) 
             ax.plot(self.x_array_equib[r_min_index:op_intersect_index, 0], self.y_r_array[r_min_index:op_intersect_index, 0], color = op_color, alpha = 0.3)         
         else:
             ax.plot(self.x_array_equib[r_min_index:r_max_index, 0], self.y_r_array[r_min_index:r_max_index, 0], color = op_color)
@@ -431,7 +433,6 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         x_s_0, y_s_0 = self.find_strip_fixedpoints_binary(n=30)
         
         x_stages, y_stages, N_2 = self.compute_equib_stages_binary(2, x_r_0 + x_s_0)
-        
         if (op_color == 'green'):
             ax.plot(x_stages, y_stages, linestyle='--', color='green', alpha = 0.3)
         else:
@@ -447,12 +448,11 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         x_strip = self.compute_equib_stages_binary(0, x_r_0 + x_s_0)[0]
         ax.scatter(x_strip, [0]*len(x_strip), marker = '^', color = 'blue', facecolors='none', edgecolors='blue', linewidths = 0.75, s = 40)
         ax.text(0.5, 0.9, f"No Stages: {N_2}", ha='center', va='center', transform=ax.transAxes, fontsize = 16)
-      
+
+        #Graphical Formatting
         ax.scatter(self.x_r_fixed, [0]*len(self.x_r_fixed), marker='o', color='red', s = 50)
         ax.scatter(self.x_s_fixed, [0]*len(self.x_s_fixed), marker='o', color='red', s = 50)
 
-        
-        
         ax.tick_params(axis='x', which='both', labelsize = 18, width = 2, length = 4)
         ax.tick_params(axis='y', which='both', labelsize = 18, width = 2, length = 4)
         ax.set_title("Full Column", fontsize = 20)
