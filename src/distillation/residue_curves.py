@@ -250,6 +250,8 @@ class PhasePortraits():
 
         self.plot_phase_vector_fields(ax,dxdt,grid_data_points, title = "Residue Vector Field")
 
+
+        
     def plot_vector_field_middle(self, ax, grid_data_points=20):
 
         """
@@ -385,19 +387,14 @@ class PhasePortraits():
             self.int_plot_path(ax, init_comp, [t_span[0],-t_span[1]], data_points, dxdt=dxdt)
 
         ax.set_aspect('equal', adjustable='box')
-
         ax.set_ylim([-0.05, 1.05])
-
         ax.set_xlim([-0.05, 1.05])
 
         ax.plot([1, 0], [0, 1], 'k--')  # Diagonal dashed line
-
         ax.hlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
-
         ax.vlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
 
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad=10)
-
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
 
     def plot_strip_portrait(self, ax, t_span, data_points: int = 15, init_comps = None):
@@ -461,19 +458,13 @@ class PhasePortraits():
             self.int_plot_path(ax, init_comp, [t_span[0],-t_span[1]], data_points, dxdt=dxdt)
 
         ax.set_aspect('equal', adjustable='box')
-
         ax.set_ylim([-0.05, 1.05])
-
         ax.set_xlim([-0.05, 1.05])
 
         ax.plot([1, 0], [0, 1], 'k--')  # Diagonal dashed line
-
         ax.hlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
 
-        ax.vlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
-
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad=10)
-
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
 
     def plot_rect_portrait(self, ax, t_span, data_points: int = 15, init_comps = None):
@@ -537,19 +528,14 @@ class PhasePortraits():
             self.int_plot_path(ax, init_comp, [t_span[0],-t_span[1]], data_points, dxdt=dxdt)
 
         ax.set_aspect('equal', adjustable='box')
-
         ax.set_ylim([-0.05, 1.05])
-
         ax.set_xlim([-0.05, 1.05])
 
         ax.plot([1, 0], [0, 1], 'k--')  # Diagonal dashed line
-
         ax.hlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
-
         ax.vlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
 
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad=10)
-
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
 
     def plot_middle_portrait(self, ax, t_span, data_points: int = 15, init_comps = None):
@@ -607,29 +593,22 @@ class PhasePortraits():
             except OverflowError:
 
                 print("Overflow occurred in dxdt.")
-
                 return None
 
         for init_comp in init_comps:
 
             self.int_plot_path(ax,init_comp, t_span, data_points,dxdt=dxdt)
-
             self.int_plot_path(ax, init_comp, [t_span[0],-t_span[1]], data_points, dxdt=dxdt)
 
         ax.set_aspect('equal', adjustable='box')
-
         ax.set_ylim([-0.05, 1.05])
-
         ax.set_xlim([-0.05, 1.05])
 
         ax.plot([1, 0], [0, 1], 'k--')  # Diagonal dashed line
-
         ax.hlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
-
         ax.vlines(0, 0, 1, colors = 'k', linestyles = 'dashed')  # dashed line
 
         ax.set_xlabel(self.thermo_model.comp_names[0], labelpad=10)
-
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10) 
 
     def int_plot_path(self, ax, initial, t_span, num_points, dxdt):
@@ -777,11 +756,8 @@ def rk4_step(t, x, dt, dxdt):
     try:
 
         k1 = dt * dxdt(t, x)
-
         k2 = dt * dxdt(t + 0.5 * dt, x + 0.5 * k1)
-
         k3 = dt * dxdt(t + 0.5 * dt, x + 0.5 * k2)
-
         k4 = dt * dxdt(t + dt, x + k3)
 
         return x + (k1 + 2 * k2 + 2 * k3 + k4) / 6
@@ -789,5 +765,4 @@ def rk4_step(t, x, dt, dxdt):
     except OverflowError:
 
         print("Overflow occurred during integration.")
-
         return None
