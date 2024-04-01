@@ -22,12 +22,27 @@ sns.set_context('talk')
 class DistillationModelDoubleFeed(DistillationModel):
     
     def __init__(self, thermo_model:VLEModel, Fr: float, zF: np.ndarray, xFL: np.ndarray, xFU: np.ndarray, xD: np.ndarray, xB: np.ndarray, reflux = None, boil_up = None, qL = 1, qU = 1) -> None:
-
+        """
+        DistillationModelDoubleFeed constructor 
+        This class is for extractive distillations using 3+ components
+        Args:
+            thermo_model (VLEModel): Vapor-Liquid Equilibrium (VLE) model to be used in the distillation process.
+            Fr (float): Feed ratio (moles in Feed : moles in Entrainer)
+            zF (np.ndarray): Mole fraction of each component in the summation of Feed + Entrainer.
+            xFL (np.ndarray): Mole fraction of each component in the feed.
+            xFU (np.ndarray): Mole fraction of each component in the entrainer.
+            xD (np.ndarray): Mole fraction of each component in the distillate.
+            xB (np.ndarray): Mole fraction of each component in the bottom product.
+            reflux (Optional): Reflux ratio. If not provided, it will be calculated based on other parameters.
+            boil_up (Optional): Boil-up ratio. If not provided, it will be calculated based on other parameters.
+            qL (float, optional): Feed condition (q) where q = 1 represents saturated liquid feed and q = 0 represents saturated vapor feed. Defaults to 1.
+            qU (float, optional): Entrainer condition (q) where q = 1 represents saturated liquid feed and q = 0 represents saturated vapor feed. Defaults to 1.
+            
+        """
         D_B  = (zF[0]-xB[0])/(xD[0]-zF[0])
         FL_B = (xD[0]-xB[0])/(Fr*(xD[0]-xFU[0])+xD[0]-xFL[0])
         
-        # assume reflux is given, boil_up is not given, and qU and qL are 1.
-        # later can do an if-else to generalize like in DistillationModel
+        # assume reflux is given, boil_up is not given, and qU and qL are 1.  
         # according to eqn 5.22
         boil_up = ((reflux+1)*D_B)+(FL_B*(Fr*(qU-1))+(qL-1))
 
@@ -41,8 +56,12 @@ class DistillationModelDoubleFeed(DistillationModel):
         self.qL = qL
         self.zF = zF
 
-    def update_boilup(self):
+    """
+    The following functions are used to update newly entered parameter values.
+    Boilup ratio is dependent on these changes, so it is also updated with each change.    
+    """
 
+    def update_boilup(self):
         D_B  = (self.zF[0]-self.xB[0])/(self.xD[0]-self.zF[0])
         FL_B = (self.xD[0]-self.xB[0])/(self.Fr*(self.xD[0]-self.xFU[0])+self.xD[0]-self.xFL[0])
         self.boil_up =  ((self.reflux+1)*D_B)+(FL_B*(self.Fr*(self.qU-1))+(self.qL-1))
@@ -113,6 +132,13 @@ class DistillationModelDoubleFeed(DistillationModel):
        
         
     def plot_rect_comp(self, ax):
+        """
+        Method to display the rectifying section plot
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+        Returns:
+            The graphical output for a demo in interactive examples is produced
+        """
         
         x_rect_comp = self.compute_rectifying_stages()[0]
         
@@ -136,7 +162,15 @@ class DistillationModelDoubleFeed(DistillationModel):
 
         
     def compute_rectifying_stages(self):
-
+        """
+        Method to calculate the compositions at each stage in the rectifying section of the column
+        Args:
+            None
+        Returns:
+            As an example, this method can be called with the following statement:
+            x_rect_comp = self.compute_rectifying_stages()[0]
+            The function produced an array of compositions at each stage
+        """
         x_comp, y_comp = [], []  # Initialize composition lists
         counter = 0
         
@@ -145,16 +179,14 @@ class DistillationModelDoubleFeed(DistillationModel):
 
         while True:
 
-            x_comp.append(x1) # Why do we have these append statements here
-            y_comp.append(y1)
+            x_comp.append(x1) 
+            y_comp.append(y1) 
 
             counter += 1
             x2 = self.thermo_model.convert_y_to_x(y1)[0][:-1]
             y2 = self.rectifying_step_xtoy(x2)
-            
-            x_comp.append(x2)  
-            y_comp.append(y2)
-            
+        
+            # Loop continues until compositions stop changing or until 200 stages are computed
             if counter == 200:
                 print("Too many stages: R OL:", counter)
                 return np.array(x_comp), np.array(y_comp)
@@ -165,7 +197,15 @@ class DistillationModelDoubleFeed(DistillationModel):
             y1 = y2
             
     def compute_stripping_stages(self):
-
+        """
+        Method to calculate the compositions at each stage in the stripping section of the column
+        Args:
+            None
+        Returns:
+            As an example, this method can be called with the following statement:
+            x_strip_comp = self.compute_stripping_stages()[0]
+            The function produced an array of compositions at each stage
+        """
         x_comp, y_comp = [], []  # Initialize composition lists
         counter = 0
         
@@ -180,9 +220,7 @@ class DistillationModelDoubleFeed(DistillationModel):
             y2 = self.thermo_model.convert_x_to_y(x1)[0][:-1]
             x2 = self.stripping_step_ytox(y2)
             
-            x_comp.append(x2)  # Should this be x2 or x1 - was x1 before
-            y_comp.append(y2)
-            
+            # Loop continues until compositions stop changing or until 200 stages are computed
             if counter == 200:
                 print("Too many stages: SOL", counter)
                 return np.array(x_comp), np.array(y_comp)
@@ -193,33 +231,35 @@ class DistillationModelDoubleFeed(DistillationModel):
             y1 = y2
     
     def compute_middle_stages(self, start_point:int):
+        """
+        Method to calculate the compositions at each stage in the middle section of the column
+        Args:
+            Start_point (int): Counting from the bottom of the column, the stage number on the stripping section 
+            at which the feed is introduced to begin the middle section
+        Returns:
+            As an example, this method can be called with the following statement:
+            x_middle_comp = self.compute_middle_stages(start_point = 5)[0]
+            The function produced an array of compositions at each stage
+        """
         
         x_comp, y_comp = [], []  # Initialize composition lists
         counter = 0
         
-        #Need to start from a set position on the stripping section; call it 'start_point' number of 
-        #stages into the stripping section.  Find the comp at that stage and use that as (x1, y1)
-        #this is not done correctly though
-        
         x_strip_comp = self.compute_stripping_stages()[0]
-        x1 = x_strip_comp[start_point, :]
+        x1 = x_strip_comp[start_point, :] # starting point set based on stripping stage number
         y1 = self.middle_step_x_to_y(x1)
-
-        #print(x1, y1) #debugging
         
         while True:
             
             x_comp.append(x1)
             y_comp.append(y1)
 
-            counter += 1
-            
+            counter += 1          
             y2 = self.thermo_model.convert_x_to_y(x1)[0][:-1]
             x2 = self.middle_step_y_to_x(y2)
 
-            x_comp.append(x2) # Should this be x1 or x2 ?
-            y_comp.append(y2)
-                        
+            # Loop continues until compositions stop changing or until 200 stages are computed
+            # Also stops if compositions leave the physically real regimes of [0,1]            
             if counter == 200:
                 print("Too many stages : MS OL:", counter)
                 return np.array(x_comp), np.array(y_comp)
@@ -233,8 +273,15 @@ class DistillationModelDoubleFeed(DistillationModel):
         
 
     def plot_rect_strip_comp(self, ax: axes, middle_start):
+        """
+        Method to display the distillation column with all 3 sections included
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+        Returns:
+            The graphical output for a demo in interactive examples is produced
+        """
 
-        middle_start = (2*middle_start - 1) #This is just to make the indexing work
+        middle_start = (middle_start - 1) 
         x_rect_comp = self.compute_rectifying_stages()[0]
         x_strip_comp = self.compute_stripping_stages()[0]
         x_middle_comp = self.compute_middle_stages(start_point = middle_start)[0]
@@ -275,6 +322,13 @@ class DistillationModelDoubleFeed(DistillationModel):
 
 
     def plot_strip_comp(self, ax: axes):
+        """
+        Method to display the stripping section plot
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+        Returns:
+            The graphical output for a demo in interactive examples is produced
+        """
 
         x_strip_comp = self.compute_stripping_stages()[0]
 
@@ -300,8 +354,16 @@ class DistillationModelDoubleFeed(DistillationModel):
         ax.legend(fontsize = 12)
 
     def plot_middle_comp(self, ax: axes, middle_start):
+        """
+        Method to display the middle section plot
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+            middle_start (int): Stage number where stripping section changes to middle sectiom
+        Returns:
+            The graphical output for a demo in interactive examples is produced
+        """
 
-        middle_start = (2*middle_start - 1) #This is just to make the indexing work
+        middle_start = (middle_start - 1)
         x_middle_comp = self.compute_middle_stages(start_point = middle_start)[0]
 
         #Extract x1 and x2 from arrays
@@ -335,6 +397,9 @@ class DistillationModelDoubleFeed(DistillationModel):
         pass
 
     def change_fr(self, new_fr):
+        """
+        This method updates all parameter which depend on the Feed Ratio
+        """
 
         self.Fr = new_fr
         D_B  = (self.zF[0]-self.xB[0])/(self.xD[0]-self.zF[0])
@@ -344,6 +409,13 @@ class DistillationModelDoubleFeed(DistillationModel):
 
        
     def plot_mb(self, ax: axes):
+        """
+        This method outputs a graphical depiction for a demo of column feasibility
+        Args:
+            ax (matplotlib.axes.Axes): The axis on which to plot the data.
+        Output:
+            Graph showing the inlet compositions connected with mass balance lines
+        """
 
         # Mark special points
         ax.scatter(self.zF[0], self.zF[1], marker='X', color='#ff7f00', label='xF', s = 100)
@@ -352,7 +424,7 @@ class DistillationModelDoubleFeed(DistillationModel):
         ax.scatter(self.xFL[0], self.xFL[1], marker='X', color='#66c2a5', label='xFL', s = 100)
         ax.scatter(self.xFU[0], self.xFU[1], marker='X', color='#fc8d62', label='xFU', s = 100)
 
-        ax.plot([self.xB[0], self.xD[0]], [self.xB[1], self.xD[1]], color = '#2b8cbe', linestyle = 'dashed')  # Diagonal dashed line
+        ax.plot([self.xB[0], self.xD[0]], [self.xB[1], self.xD[1]], color = '#2b8cbe', linestyle = 'dasproducinhed')  # Diagonal dashed line
         ax.plot([self.xFL[0], self.xFU[0]], [self.xFL[1], self.xFU[1]], color = '#8da0cb', linestyle = 'dashed')  # Diagonal dashed line
         
         ax.set_aspect('equal', adjustable='box')
