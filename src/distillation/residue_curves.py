@@ -134,7 +134,7 @@ class PhasePortraits():
 
                 return None
 
-        self.plot_phase_vector_fields(ax, dxdt, grid_data_points, title = "Stripping Vector Field")
+        self.plot_phase_vector_fields(ax, dxdt, grid_data_points, title = "Stripping Phase Plane")
 
     def plot_vector_field_rect(self, ax, grid_data_points=20):
 
@@ -194,7 +194,7 @@ class PhasePortraits():
 
                 return None
 
-        self.plot_phase_vector_fields(ax, dxdt,grid_data_points, title = "Rectifying Vector Field")
+        self.plot_phase_vector_fields(ax, dxdt,grid_data_points, title = "Rectifying Phase Plane")
 
     def plot_vector_field_residue(self, ax, grid_data_points=20):
 
@@ -248,7 +248,7 @@ class PhasePortraits():
 
                 return None
 
-        self.plot_phase_vector_fields(ax,dxdt,grid_data_points, title = "Residue Vector Field")
+        self.plot_phase_vector_fields(ax,dxdt,grid_data_points, title = "Residue Phase Plane")
 
 
         
@@ -314,7 +314,7 @@ class PhasePortraits():
 
                 return None
 
-        self.plot_phase_vector_fields(ax,dxdt,grid_data_points, title = "Middle Vector Field")
+        self.plot_phase_vector_fields(ax,dxdt,grid_data_points, title = "Middle Phase Plane")
 
     def plot_residue_curve(self, ax, t_span, data_points: int = 15, init_comps = None):
 

@@ -424,7 +424,7 @@ class DistillationModelDoubleFeed(DistillationModel):
         ax.scatter(self.xFL[0], self.xFL[1], marker='X', color='#66c2a5', label='xFL', s = 100)
         ax.scatter(self.xFU[0], self.xFU[1], marker='X', color='#fc8d62', label='xFU', s = 100)
 
-        ax.plot([self.xB[0], self.xD[0]], [self.xB[1], self.xD[1]], color = '#2b8cbe', linestyle = 'dasproducinhed')  # Diagonal dashed line
+        ax.plot([self.xB[0], self.xD[0]], [self.xB[1], self.xD[1]], color = '#2b8cbe', linestyle = 'dashed')  # Diagonal dashed line
         ax.plot([self.xFL[0], self.xFU[0]], [self.xFL[1], self.xFU[1]], color = '#8da0cb', linestyle = 'dashed')  # Diagonal dashed line
         
         ax.set_aspect('equal', adjustable='box')
