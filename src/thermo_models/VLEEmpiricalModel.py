@@ -16,29 +16,29 @@ from thermo_models.VLEModelBaseClass  import *
 
 class VLEEmpiricalModelBinary(VLEModel):
     def __init__(self, comp_names, func_xtoy: Callable[[float], float]) -> None:
-        """Initialize the VLE empirical model.
+        """
+        Initializes the VLE empirical model for a binary system.
 
         Args:
-            num_comp (int): The number of components in the system.
-            P_sys (float): The system pressure in units compatible with the vapor pressures.
-            comp_names (list): The names of the components in the system.
-            partial_pressure_eqs (Any): The equations or data for calculating partial pressures.
-            func_xtoy (Callable): Function to convert mole fraction x to y.
-            use_jacobian (bool, optional): Whether to use the Jacobian matrix in calculations.
+            comp_names (list): Names of the components in the binary system.
+            func_xtoy (Callable[[float], float]): Function to convert mole fraction x to y.
+
+        Note:
+            This model simplifies the VLE calculation by directly using an empirical function for conversion without involving system pressure or partial pressure equations.
         """
-        partial_pressure_eqs = None
         super().__init__(2, None, comp_names, None, False)
         self.func_xtoy = func_xtoy
 
 
     def convert_x_to_y(self, x: float):
-        """Converts x to y using the provided function.
+        """
+        Converts mole fraction x in the liquid phase to y in the vapor phase using the provided function.
 
         Args:
-            x (float): Mole fraction in the liquid phase.
+            x (np.ndarray): Mole fraction in the liquid phase.
 
         Returns:
-            solution (float): Mole fraction in the vapor phase.
+            solution (np.ndarray): Mole fraction in the vapor phase.
             message (str): Informational message.
         """
 
@@ -49,11 +49,11 @@ class VLEEmpiricalModelBinary(VLEModel):
         """Converts y to x by solving the provided function.
 
         Args:
-            y (float): Mole fraction in the vapor phase.
+            y (np.ndarray): Mole fraction in the vapor phase.
             x_guess (float, optional): Initial guess for x. Defaults to a random value between 0 and 1.
 
         Returns:
-            solution (float): Mole fraction in the liquid phase.
+            solution (np.ndarray): Mole fraction in the liquid phase.
             message (str): Informational message.
 
         Raises:
@@ -83,13 +83,12 @@ class VLEEmpiricalModelBinary(VLEModel):
         raise ValueError("fsolve failed to find a solution")
     
     def plot_binary_yx(self, data_points: int = 100) -> None:
-        """Plot the Vapor-Liquid Equilibrium (VLE) y-x diagram for a binary mixture.
+        """
+        Plot the Vapor-Liquid Equilibrium (VLE) y-x diagram for a binary mixture.
 
         Args:
             data_points (int, optional): Number of data points to generate for the plot. Defaults to 100.
 
-        Raises:
-            ValueError: If comp_id is not 0 or 1.
         """
 
         x_space = np.linspace(0,1,data_points)

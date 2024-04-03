@@ -12,7 +12,21 @@ sys.path.append(PROJECT_ROOT)
 from utils.rand_comp_gen import *
 
 class VLEModel:
+    """
+    Base class for vapor-liquid equilibrium models.
+    
+    """
     def __init__(self, num_comp: int, P_sys: float, comp_names, partial_pressure_eqs, use_jacobian=False):
+        """
+        Initializes the VLEModel object with specified parameters.
+
+        Args:
+            num_comp (int): Number of components in the system
+            P_sys (float): System pressure
+            comp_names (list): Names of components in the system
+            partial_pressure_eqs (list): A list containing AntoineEquationBase10 or AntoineEquationBaseE objects for each component, used to calculate their partial pressures.
+            use_jacobian (bool, optional): Flag if jacobian should be used in optimizations. Defaults to False.
+        """
         self.num_comp = num_comp
         self.P_sys = P_sys
         self.comp_names = comp_names
@@ -21,25 +35,35 @@ class VLEModel:
         
     def get_activity_coefficient(self, x_array, Temp = None)->np.ndarray:
         """
-        Computes the activity coefficient for each component in the the model.
+        Method to compute the activity coefficient for each component in the model. 
+        Must be implemented by subclasses.
 
-        Raises:
-            NotImplementedError: Not implemented for base class
+        Parameters:
+            x_array (np.ndarray): Liquid mole fraction of each component.
+            Temp (float, optional): Temperature at which to calculate activity coefficients.
 
         Returns:
-            np.ndarray: activity coefficient of each component
+            np.ndarray: Activity coefficients of each component.
+
+        Raises:
+            NotImplementedError: If the method is not implemented in a subclass.
         """
+
         raise NotImplementedError
     
     def get_vapor_pressure(self, Temp)->np.ndarray:
         """
-        Compute the vapor pressure for each component in the model.
+        Method to compute the vapor pressure for each component in the model. Must be implemented by subclasses.
 
-        Raises:
-            NotImplementedError: Not implemented for base class
+        Parameters:
+            Temp (float): Temperature at which to calculate vapor pressures.
 
         Returns:
             np.ndarray: vapor pressure of each component
+            
+        Raises:
+            NotImplementedError: Not implemented for base class
+            
         """
         raise NotImplementedError
     
@@ -52,7 +76,9 @@ class VLEModel:
             temp_guess (float): inital temperature guess for fsolve
 
         Returns:
-            solution (np.ndarray): The solution from the fsolve function, which includes the vapor mole fractions and the system temperature.
+            tuple: A tuple containing:
+                - np.ndarray: The solution from the fsolve function, including the vapor mole fractions and the system temperature.
+                - str: A message describing the exit condition of fsolve.
         """
         
         # Compute the boiling points for each component
@@ -96,11 +122,17 @@ class VLEModel:
 
         Args:
             y_array (np.ndarray): Vapor mole fraction of each component.
-            temp_guess (float): inital temperature guess for fsolve
+            temp_guess (float, optional): Initial temperature guess for fsolve. If not provided, a random temperature within a logical range is used.
 
         Returns:
-            solution (np.ndarray): The solution from the fsolve function, which includes the liquid mole fractions and the system temperature.
+            tuple: A tuple containing:
+                - np.ndarray: The solution from the fsolve function, including the liquid mole fractions and the system temperature.
+                - str: A message describing the exit condition of fsolve.
+
+        Note:
+            This method attempts to solve the system until convergence, using fsolve. It utilizes an iterative approach, potentially leveraging the Jacobian if 'use_jacobian' is set to True and a corresponding Jacobian function is provided.
         """
+
         
         # Compute the boiling points for each component
         boiling_points = [eq.get_boiling_point(self.P_sys) for eq in self.partial_pressure_eqs]
@@ -146,8 +178,7 @@ class VLEModel:
         the vapor-liquid equilibrium calculations.
 
         Args:
-            vars (np.ndarray): A 1D array containing the initial guess for the 
-                vapor mole fractions and the system temperature.
+            vars (np.ndarray): A 1D array containing the initial guess for the vapor mole fractions and the system temperature.
             x_array (np.ndarray): A 1D array containing the liquid mole fractions.
 
         Returns:
@@ -178,8 +209,7 @@ class VLEModel:
         the vapor-liquid equilibrium calculations.
 
         Args:
-            vars (np.ndarray): A 1D array containing the initial guess for the 
-                liquid mole fractions and the system temperature.
+            vars (np.ndarray): A 1D array containing the initial guess for the liquid mole fractions and the system temperature.
             y_array (np.ndarray): A 1D array containing the vapor mole fractions.
 
         Returns:
@@ -244,150 +274,12 @@ class VLEModel:
         ax.set_ylabel("Temperature")
         ax.legend()
 
-
-    # Should this be removed ?
-    def plot_ternary_txy(self, data_points:int, keep_zero:int):
-        """
-        Plots the surface plots for the ternary system, and also plots a T-x-y diagram
-        with a specific component's composition set to 0.
-
-        Args:
-            data_points (int): Number of data points to use in the plot.
-            comp_index (int): Index of the component to set to 0
-
-        Raises:
-            ValueError: If the number of components is not 3.
-        """
-
-        if self.num_comp != 3:
-            raise ValueError("This method can only be used for ternary mixtures.")
-    
-        if keep_zero == 1:
-            x1s, x2s = np.meshgrid(np.linspace(0, 1, data_points), 
-                        np.linspace(0, 1, data_points))
-
-            T = np.zeros((data_points, data_points))
-            y1s, y2s = np.zeros((data_points, data_points)), np.zeros((data_points, data_points))
-
-            for i in range(data_points):
-                for j in range(data_points):
-                    if x1s[i, j] + x2s[i, j] > 1:
-                        T[i, j] = float('nan')
-                        y1s[i, j] = float('nan')
-                        y2s[i, j] = float('nan')
-                        x1s[i, j] = float('nan')
-                        x2s[i, j] = float('nan')
-                    else:
-                        solution = self.convert_x_to_y(np.array([x1s[i, j], x2s[i, j], 1 - x1s[i, j] - x2s[i, j]]))[0]
-                        y1s[i, j] = solution[0]
-                        y2s[i, j] = solution[1]
-                        T[i, j] = solution[3]
-            fig = plt.figure(figsize=(15, 5))
-            ax = plt.subplot(121, projection='3d')
-            ax.plot_surface(x1s, x2s, T)
-            ax.plot_surface(y1s, y2s, T)
-
-            ax.set_title('Surface Plot of Ternary System')
-
-            ax.set_xlabel('x1, x2')
-            ax.set_ylabel('y1, y2')
-            ax.set_zlabel('T')
-
-            ax = plt.subplot(122)
-            ax.plot(x1s[0,:], T[0,:])
-            ax.plot(y1s[0,:], T[0,:])
-
-            ax.set_title('T-x-y cross section of Ternary plot: keeping x2 fixed at 0')
-
-            ax.set_xlabel('x1, y1')
-            ax.set_ylabel('T')
-        elif keep_zero == 2:
-            x1s, x3s = np.meshgrid(np.linspace(0, 1, 100), 
-                       np.linspace(0, 1, 100))
-
-            T = np.zeros((100, 100))
-            y1s, y3s = np.zeros((100, 100)), np.zeros((100, 100))
-
-            for i in range(100):
-                for j in range(100):
-                    if x1s[i, j] + x3s[i, j] > 1:
-                        T[i, j] = float('nan')
-                        y1s[i, j] = float('nan')
-                        y3s[i, j] = float('nan')
-                        x1s[i, j] = float('nan')
-                        x3s[i, j] = float('nan')
-                    else:
-                        solution = self.convert_x_to_y(np.array([x1s[i, j], 1 - x1s[i, j] - x3s[i, j], x3s[i, j]]))
-                        y1s[i, j] = solution[0]
-                        y3s[i, j] = solution[2]
-                        T[i, j] = solution[3]
-            fig = plt.figure(figsize=(15, 5))
-            ax = plt.subplot(121, projection='3d')
-            ax.plot_surface(x1s, 1-x1s-x3s, T)
-            ax.plot_surface(y1s, 1-y1s-y3s, T)
-
-            ax.set_title('Surface Plot of Ternary system: X-to-Y')
-
-            ax.set_xlabel('x1, x2')
-            ax.set_ylabel('y1, y2')
-            ax.set_zlabel('T')
-
-            ax = plt.subplot(122)
-            ax.plot(x1s[0,:], T[0,:])
-            ax.plot(y1s[0,:], T[0,:])
-
-            ax.set_title('T-x-y cross section of Ternary plot: keeping x3 fixed at 0')
-
-            ax.set_xlabel('x1, y1')
-            ax.set_ylabel('T')
-        elif keep_zero == 0:
-            x2s, x1s = np.meshgrid(np.linspace(0, 1, 100), 
-                       np.linspace(0, 1, 100))
-
-            T = np.zeros((100, 100))
-            y2s, y1s = np.zeros((100, 100)), np.zeros((100, 100))
-
-            for i in range(100):
-                for j in range(100):
-                    if x2s[i, j] + x1s[i, j] > 1:
-                        T[i, j] = float('nan')
-                        y2s[i, j] = float('nan')
-                        y1s[i, j] = float('nan')
-                        x2s[i, j] = float('nan')
-                        x1s[i, j] = float('nan')
-                    else:
-                        solution = self.convert_x_to_y(np.array([x1s[i, j], x2s[i, j], 1 - x1s[i, j] - x2s[i, j]]))[0]
-                        y1s[i, j] = solution[0]
-                        y2s[i, j] = solution[1]
-                        T[i, j] = solution[3]
-            fig = plt.figure(figsize=(15, 5))
-            ax = plt.subplot(121, projection='3d')
-            ax.plot_surface(x1s, x2s, T)
-            ax.plot_surface(y1s, y2s, T)
-
-            ax.set_title('Surface Plot of Ternary system: X-to-Y')
-
-            ax.set_xlabel('x1, x2')
-            ax.set_ylabel('y1, y2')
-            ax.set_zlabel('T')
-
-            ax = plt.subplot(122)
-            ax.plot(x2s[0,:], T[0,:])
-            ax.plot(y2s[0,:], T[0,:])
-
-            ax.set_title('T-x-y cross section of Ternary plot: keeping x1 fixed at 0')
-
-            ax.set_xlabel('x2, y2')
-            ax.set_ylabel('T')
-            
-        plt.show()
-
     def plot_yx_binary(self, data_points:int=100):
         """
         Plots the y-x diagram for a binary mixture.
         
         Args:
-            data_points (int): Number of data points to use in the plot. Default is 100.
+            data_points (int, optional): Number of data points to use in the plot. Default is 100.
         """
         
         # Initialize a figure for plotting
