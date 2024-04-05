@@ -309,52 +309,6 @@ class VLEModel:
         plt.grid(True)
         plt.show()
         
-    # group of functions used for jacobian calculations
-    def jacobian_x_to_y(self, uvec, xvec):
-
-        gammas_ders = self.get_gamma_ders(np.concatenate((xvec, np.array([uvec[-1]]))), l=0) # l is dummy value
-        gammas = self.get_activity_coefficient(xvec, uvec[-1])
-        jac = np.empty((self.num_comp+1, self.num_comp+1))
-        for i in range(self.num_comp):
-            for j in range(self.num_comp+1):
-                if j == self.num_comp:
-                    jac[i,j] = xvec[i]*self.get_Psat_i(i, uvec[-1])*gammas_ders[i,-1] + xvec[i]*gammas[i]*self.get_dPsatdT_i(i, uvec[-1])
-                elif i == j:
-                    jac[i,j] = -self.get_Psys()
-                else:
-                    jac[i,j] = 0
-        jac[self.num_comp, :] = np.concatenate((np.ones(self.num_comp), np.zeros(1)))
-        return jac
-
-
-    def jacobian_y_to_x(self, uvec, yvec):
-        
-        gammas_ders = self.get_gamma_ders(uvec, l=0) # l is dummy value
-        gammas = self.get_activity_coefficient(uvec[:-1], uvec[-1])
-        jac = np.empty((self.num_comp+1, self.num_comp+1))
-        for i in range(self.num_comp):
-            for j in range(self.num_comp+1):
-                if j == self.num_comp:
-                    jac[i,j] = uvec[i]*gammas_ders[i, -1]*self.get_Psat_i(i, uvec[-1]) + uvec[i]*gammas[i]*self.get_dPsatdT_i(i, uvec[-1])
-                elif i == j:
-                    jac[i,j] = gammas[i]*self.get_Psat_i(i, uvec[-1]) + uvec[i]*gammas_ders[i,j]*self.get_Psat_i(i, uvec[-1])
-                else:
-                    jac[i,j] = uvec[i]*gammas_ders[i,j]*self.get_Psat_i(i, uvec[-1])
-        jac[self.num_comp, :] = np.concatenate((np.ones(self.num_comp), np.zeros(1)))
-        return jac
-
-    def get_Psat_i(self, i, T):
-        return self.partial_pressure_eqs[i].get_partial_pressure(T)
-    def get_dPsatdT_i(self, i, T):
-        return self.partial_pressure_eqs[i].get_dPsatdT(T)
-    def get_Psys(self):
-        return self.P_sys
-    def get_gamma_ders(self, uvec, l):
-        raise NotImplementedError('Jacobian not available for this model')
-
-        
-
-        
         
    
 

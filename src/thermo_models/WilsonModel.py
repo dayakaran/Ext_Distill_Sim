@@ -10,22 +10,22 @@ from thermo_models.VLEModelBaseClass import *
 
 class WilsonModel(VLEModel):
     """
-    A class representing a thermodynamic model based on Wilson.
+    A thermodynamic model implementing the Wilson equation for calculating vapor-liquid equilibrium (VLE).
 
-    This model calculates the conversion between liquid mole fraction and vapor mole fraction
-    based on Wilson's model.
+    Parameters:
+        num_comp (int): The number of components in the system.
+        P_sys (float): The system pressure, assumed constant, in units compatible with the vapor pressures.
+        comp_names (list): Names of the components in the system.
+        Lambdas (dict): Interaction parameters for the Wilson model. Dictionary keys are tuples (i, j)
+                        representing component pairs, with corresponding lambda values as dictionary values.
+        partial_pressure_eqs (list, optional): List containing AntoineEquation objects for calculating 
+                        the vapor pressure of each component. Default is None.
+        use_jacob (bool, optional): Flag indicating whether to use the Jacobian matrix for optimizations. 
+                        Default is False.
 
-    Args:
-        num_comp (int): The number of components of the system -- typically 2 or 3.
-        P_sys (float): The system pressure in units compatible with the vapor pressures.
-        Lambdas (dict): Dictionary keys are tuples (i,j) that indicate the lambda coefficient with corresponding value.
-        comp_names (list): The names of the components in the system.
-        partial_pressure_eqs (AntoineEquationBase10, optional): The Antoine equations for each component.
-        use_jacob (bool, optional): Flag to determine whether to use the Jacobian matrix in calculations.
-
-    Reference: 
-        MULTICOMPONENT EQUILIBRIA—THE WILSON EQUATION, R. V. Orye and J. M. Prausnitz.
-        Industrial & Engineering Chemistry 1965 57 (5), 18-26. DOI: 10.1021/ie50665a005
+    Reference:
+        Orye, R. V., & Prausnitz, J. M. (1965). MULTICOMPONENT EQUILIBRIA—THE WILSON EQUATION.
+        Industrial & Engineering Chemistry, 57(5), 18-26. https://doi.org/10.1021/ie50665a005
     """
 
     def __init__(self, num_comp: int, P_sys: float, comp_names, Lambdas: dict, partial_pressure_eqs=None, use_jacob=False):
@@ -33,6 +33,19 @@ class WilsonModel(VLEModel):
         self.Lambdas = Lambdas
 
     def get_activity_coefficient(self, x_, Temp = None):
+        """
+        Method to compute the activity coefficient for each component in the model. 
+
+        Parameters:
+            x_array (np.ndarray): Liquid mole fraction of each component.
+            Temp (float, optional): Temperature at which to calculate activity coefficients.
+
+        Returns:
+            np.ndarray: Activity coefficients of each component.
+
+        Raises:
+            NotImplementedError: If the method is not implemented in a subclass.
+        """
         #Assert that Lambdas[(i,i)] = 1
         for i in range(1, self.num_comp+1):
             if (self.Lambdas[(i,i)] != 1):

@@ -4,29 +4,44 @@ from thermo_models.VLEModelBaseClass  import *
 
 class VanLaarModel(VLEModel):
     """
-    A class representing a thermodynamic model based on Van Laar.
+    Implements the Van Laar model for estimating activity coefficients in binary or multicomponent systems.
 
-    This model calculates the conversion between liquid mole fraction and vapor mole fraction
-    based on Van Laar's model.
+    Parameters:
+        num_comp (int): Number of components in the mixture.
+        P_sys (float): System pressure, assumed to be constant, in units compatible with the Antoine equation.
+        comp_names (list): Names of the components in the mixture.
+        partial_pressure_eqs (AntoineEquationBase10): Antoine equation parameters for calculating vapor pressures.
+        A_coeff (dict): Van Laar A coefficients, where keys are tuples of component indices (i, j) and values are the coefficients.
+        use_jacobian (bool, optional): Indicates whether to use the Jacobian matrix for numerical methods. Defaults to False.
 
-    Args:
-        num_comp (int): The number of components in the system.
-        P_sys (float): The system pressure in units compatible with the vapor pressures.
-        comp_names (list): The names of the components in the system.
-        partial_pressure_eqs (AntoineEquationBase10): The Antoine equations for each component.
-        A_coeff (dict): A dictionary of Van Laar A coefficients for the components.
-        use_jacobian (bool, optional): Flag to determine whether to use the Jacobian matrix in calculations.
- 
     Attributes:
-        P_sys (float): The system pressure used in the calculations.
-        A_coeff (dict): A dictionary of Van Laar A coefficients for the components.
+        P_sys (float): The system pressure used in calculations.
+        A_coeff (dict): Van Laar A coefficients for the mixture components.
     """
+
     
     def __init__(self, num_comp: int, P_sys: float, comp_names, partial_pressure_eqs: AntoineEquationBase10, A_coeff: dict, use_jacobian=False):
         super().__init__(num_comp, P_sys, comp_names, partial_pressure_eqs, use_jacobian)
         self.A_coeff = A_coeff
 
     def get_activity_coefficient(self, x_array, Temp:float):
+        """
+        Calculates activity coefficients using the Van Laar equation for each component in the mixture.
+
+        This method determines the deviation from ideal solution behavior by calculating the activity coefficients
+        based on the Van Laar model, which requires the mixture's composition, temperature, and Van Laar A coefficients.
+
+        Parameters:
+            x_array (np.ndarray): Mole fractions of components in the liquid phase.
+            Temp (float): Temperature at which to calculate the activity coefficients.
+
+        Returns:
+            list: Activity coefficients for each component in the mixture.
+
+        Raises:
+            ValueError: If A coefficients are entered incorrectly or if any mathematical operation results in an invalid value.
+        """
+
         #Assert that A_coeff[(i,i)] = 1
         for i in range(1, self.num_comp+1):
             if (self.A_coeff[(i,i)] != 0):

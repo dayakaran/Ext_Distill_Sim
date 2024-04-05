@@ -1,8 +1,6 @@
 import numpy as np
 import os, sys
-#
-# Panwa: I'm not sure how else to import these properly
-#
+
 PROJECT_ROOT = os.path.abspath(os.path.join(
             os.path.dirname(__file__), 
             os.pardir)

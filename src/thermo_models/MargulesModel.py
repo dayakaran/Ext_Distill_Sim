@@ -95,25 +95,3 @@ class MargulesModel(VLEModel):
         for partial_pressure_eq in self.partial_pressure_eqs:
             vap_pressure_array.append(partial_pressure_eq.get_partial_pressure(Temp))
         return np.array(vap_pressure_array)
-    
-    def get_gamma_ders(self, uvec, l):
-        ders = np.empty((3,4))
-        gammas = self.get_activity_coefficient(uvec[:-1], uvec[-1])
-        for j in range(4):
-            B = sum([2*self.A_[k, j]*uvec[k]*uvec[j]+self.A_[j, k]*(uvec[k]**2) for k in range(3)]) if j != 3 else 0
-            for i in range(3):
-                if j == 3:
-                    ders[i, j] = gammas[i]*np.log(gammas[i])*(1/uvec[-1])
-                    continue
-                A = 0
-                if i == j:
-                    A = sum([self.A_[k, j]*uvec[k] for k in range(3)])
-                else:
-                    A = self.A_[i, j]*uvec[j] + self.A_[j, i]*uvec[i]
-                ders[i, j] = (gammas[i]*(2*A-2*B))/uvec[-1]
-        return ders # dgamma(i)/dx(j)
-
-
-
-
-            
