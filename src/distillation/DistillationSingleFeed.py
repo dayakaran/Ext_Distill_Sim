@@ -1,8 +1,6 @@
 import numpy as np
 import os, sys
-#
-# Panwa: I'm not sure how else to import these properly
-#
+
 PROJECT_ROOT = os.path.abspath(os.path.join(
             os.path.dirname(__file__), 
             os.pardir)
@@ -156,4 +154,4 @@ class DistillationModelSingleFeed:
         self.reflux = r_new
         self.boil_up = ((self.reflux+self.q)*((self.xF[0]-self.xB[0])/(self.xD[0]-self.xF[0]))) + self.q - 1
 
-        return self
+    

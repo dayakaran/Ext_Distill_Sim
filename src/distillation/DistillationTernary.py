@@ -119,7 +119,7 @@ class DistillationModelTernary(DistillationModelSingleFeed):
         x_strip_comp = self.compute_stripping_stages()[0]
                 
         ax.plot( x_strip_comp[:-1, 0],  x_strip_comp[:-1, 1], '-s', label='Stripping Line', color = "#377eb8", markersize = 6)  # '-s' means a line with box markers at each data point
-        ax.plot( x_strip_comp[-1, 0],  x_strip_comp[-1, 1], '*', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
+        ax.plot( x_strip_comp[-1, 0],  x_strip_comp[-1, 1], '*', label='OL Terminus', color = "black", markersize = 15)  # '-*' means a line with a star marker at the endpoint
 
         # Mark special points
         ax.scatter(self.xF[0], self.xF[1], marker='X', color='#ff7f00', label='xF', s = 100)

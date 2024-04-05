@@ -10,29 +10,57 @@ from thermo_models.VLEModelBaseClass  import *
 
 class MargulesModel(VLEModel):
     """
-    A class representing a thermodynamic model based on Margules.
+    Implements the Margules model for estimating activity coefficients in binary or multicomponent systems.
 
-    This model calculates the conversion between liquid mole fraction and vapor mole fraction
-    based on Margules's model.
+    The Margules model provides a way to calculate activity coefficients based on the system's composition,
+    temperature, and specific interaction parameters between components. This class enables the computation
+    of vapor pressures and activity coefficients essential for understanding the VLE behavior of the system.
 
-    Args:
-        num_comp (int): The number of components of the system -- typically 2 or 3
-        P_sys (float): The system pressure in units compatible with the vapor pressures.
-        A_ (dict): Dictionary keys are tuples (i,j) that indicate the coefficient with corresponding value 
-                             ex: A_[(1,2)] = A12
-
-    Methods:
-        get_activity_coefficient: Using the known Aij values, the gamma activity coefficients are computed according to Margules Equation
-        get_vapor_pressure: Computes the vapor pressure for each component at a given temperature.
+    Parameters:
+        num_comp (int): Number of components in the mixture.
+        P_sys (float): System pressure, assumed constant, in units compatible with the vapor pressures.
+        A_ (dict): Interaction parameters for the Margules model. Dictionary keys are tuples (i, j)
+                representing component pairs, with corresponding coefficients as dictionary values.
+        comp_names (list): Names of the components in the system.
+        partial_pressure_eqs (AntoineEquationBase10): Antoine equation parameters for calculating vapor pressures.
+        use_jacob (bool, optional): Indicates whether to use the Jacobian matrix for optimizations. Defaults to False.
     """
 
-    #CONSTRUCTOR 
+
     def __init__(self, num_comp:int, P_sys:np.ndarray, A_:dict, comp_names, partial_pressure_eqs: AntoineEquationBase10, use_jacob:bool):
+        """
+        Initializes a MargulesModel instance with essential parameters for VLE calculations.
+
+        Parameters:
+            num_comp (int): Number of components in the mixture.
+            P_sys (float): Total system pressure.
+            A_ (dict): Margules coefficients, where keys are tuples of component indices (i, j) and values are the coefficients.
+            comp_names (list): Names of the components in the mixture.
+            partial_pressure_eqs (AntoineEquationBase10): Antoine equation parameters for each component.
+            use_jacob (bool, optional): Flag indicating the use of the Jacobian matrix in optimizations. Defaults to False.
+        """
+
         super().__init__(num_comp, P_sys, comp_names,partial_pressure_eqs,use_jacob)
         self.A_ = A_
         
-    
     def get_activity_coefficient(self, x_array:np.ndarray, Temp:float):
+        """
+        Calculates activity coefficients for each component in a mixture using the Margules equation.
+
+        For a binary system, specific formulas are used. For multicomponent systems, a generalized form of the
+        Margules equation is applied.
+
+        Parameters:
+            x_array (np.ndarray): Mole fractions of components in the liquid phase.
+            Temp (float): Temperature at which the activity coefficients are calculated.
+
+        Returns:
+            np.ndarray: An array of activity coefficients for each component in the mixture.
+
+        Raises:
+            ValueError: If the interaction coefficients (A) are entered incorrectly.
+        """
+
         if (self.num_comp == 2):
             gamma1 = np.exp((self.A_[(1,2)] + 2*(self.A_[(2,1)] - self.A_[(1,2)])*x_array[0]) * (x_array[1]**2))
             gamma2 = np.exp((self.A_[(2,1)] + 2*(self.A_[(1,2)] - self.A_[(2,1)])*x_array[1]) * (x_array[0]**2))     
@@ -50,12 +78,6 @@ class MargulesModel(VLEModel):
 
                 part1 = np.sum(np.array( [A_[k, i] * x_array[i]**2 for i in range(self.num_comp) ]))
                 part2 = np.sum(np.array( [A_[i, k] * x_array[i]*x_array[k] for i in range(self.num_comp) ]))
-                                
-                '''
-                part1 = np.sum(A_[k, :] * x_array**2)
-                part2 = 2 * np.sum(A_[:, k] * x_array * x_array[k])
-                part3 = 2 * np.sum(np.sum(A_ * x_array.reshape(-1, 1) * (x_array.reshape(1, -1) ** 2), axis=1)) # Check if this is correct
-                '''
                 
                 result = np.exp((part1 + part2 - part3)/Temp)
                 gammas.append(result)
@@ -73,25 +95,3 @@ class MargulesModel(VLEModel):
         for partial_pressure_eq in self.partial_pressure_eqs:
             vap_pressure_array.append(partial_pressure_eq.get_partial_pressure(Temp))
         return np.array(vap_pressure_array)
-    
-    def get_gamma_ders(self, uvec, l):
-        ders = np.empty((3,4))
-        gammas = self.get_activity_coefficient(uvec[:-1], uvec[-1])
-        for j in range(4):
-            B = sum([2*self.A_[k, j]*uvec[k]*uvec[j]+self.A_[j, k]*(uvec[k]**2) for k in range(3)]) if j != 3 else 0
-            for i in range(3):
-                if j == 3:
-                    ders[i, j] = gammas[i]*np.log(gammas[i])*(1/uvec[-1])
-                    continue
-                A = 0
-                if i == j:
-                    A = sum([self.A_[k, j]*uvec[k] for k in range(3)])
-                else:
-                    A = self.A_[i, j]*uvec[j] + self.A_[j, i]*uvec[i]
-                ders[i, j] = (gammas[i]*(2*A-2*B))/uvec[-1]
-        return ders # dgamma(i)/dx(j)
-
-
-
-
-            
