@@ -2,14 +2,13 @@ import numpy as np
 import os, sys
 PROJECT_ROOT = os.path.abspath(os.path.join(
             os.path.dirname(__file__), 
-            os.pardir)
-)
+            os.pardir))
+
 sys.path.append(PROJECT_ROOT) 
 from thermo_models.VLEModelBaseClass import *
 
-
 class WilsonModel(VLEModel):
-    """
+    '''
     A thermodynamic model implementing the Wilson equation for calculating vapor-liquid equilibrium (VLE).
 
     Parameters:
@@ -26,14 +25,15 @@ class WilsonModel(VLEModel):
     Reference:
         Orye, R. V., & Prausnitz, J. M. (1965). MULTICOMPONENT EQUILIBRIA—THE WILSON EQUATION.
         Industrial & Engineering Chemistry, 57(5), 18-26. https://doi.org/10.1021/ie50665a005
-    """
+    '''
 
     def __init__(self, num_comp: int, P_sys: float, comp_names, Lambdas: dict, partial_pressure_eqs=None, use_jacob=False):
+
         super().__init__(num_comp, P_sys, comp_names, partial_pressure_eqs, use_jacob)
         self.Lambdas = Lambdas
 
     def get_activity_coefficient(self, x_, Temp = None):
-        """
+        '''
         Method to compute the activity coefficient for each component in the model. 
 
         Parameters:
@@ -45,7 +45,7 @@ class WilsonModel(VLEModel):
 
         Raises:
             NotImplementedError: If the method is not implemented in a subclass.
-        """
+        '''
         #Assert that Lambdas[(i,i)] = 1
         for i in range(1, self.num_comp+1):
             if (self.Lambdas[(i,i)] != 1):
@@ -71,12 +71,12 @@ class WilsonModel(VLEModel):
         return np.array(gamma_list)
     
     def get_vapor_pressure(self, Temp)->np.ndarray:
-        """
+        '''
         Args:
             Temp (float): The temperature at which to compute the vapor pressure.      
         Returns:
             np.ndarray: The vapor pressure for each component.
-        """
+        '''
         vap_pressure_array = []
         for partial_pressure_eq in self.partial_pressure_eqs:
             vap_pressure_array.append(partial_pressure_eq.get_partial_pressure(Temp))

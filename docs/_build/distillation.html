@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>distillation package &mdash; ExtDistillSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExtDistillSim
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">distillation package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-distillation.DistillationBinary">distillation.DistillationBinary module</a></li>
+<li><a class="reference internal" href="#module-distillation.DistillationDoubleFeed">distillation.DistillationDoubleFeed module</a></li>
+<li><a class="reference internal" href="#module-distillation.DistillationModel">distillation.DistillationModel module</a></li>
+<li><a class="reference internal" href="#module-distillation.DistillationSingleFeed">distillation.DistillationSingleFeed module</a></li>
+<li><a class="reference internal" href="#module-distillation.DistillationTernary">distillation.DistillationTernary module</a></li>
+<li><a class="reference internal" href="#module-distillation.residue_curves">distillation.residue_curves module</a></li>
+<li><a class="reference internal" href="#module-distillation">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExtDistillSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">distillation package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/distillation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="distillation-package">
+<h1>distillation package<a class="headerlink" href="#distillation-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-distillation.DistillationBinary">
+<span id="distillation-distillationbinary-module"></span><h2>distillation.DistillationBinary module<a class="headerlink" href="#module-distillation.DistillationBinary" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="distillation.DistillationBinary.DistillationModelBinary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distillation.DistillationBinary.</span></span><span class="sig-name descname"><span class="pre">DistillationModelBinary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermo_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="thermo_models.html#thermo_models.VLEModelBaseClass.VLEModel" title="thermo_models.VLEModelBaseClass.VLEModel"><span class="pre">VLEModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">xF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xD</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xB</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boil_up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationBinary.DistillationModelBinary" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed" title="distillation.DistillationSingleFeed.DistillationModelSingleFeed"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistillationModelSingleFeed</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationBinary.DistillationModelBinary.compute_equib_stages_binary">
+<span class="sig-name descname"><span class="pre">compute_equib_stages_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationBinary.DistillationModelBinary.compute_equib_stages_binary" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate the compositions at each stage in a binary distillation columm</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>ax_num (int): 0, 1, or 2 depending on the graph being analyzed
+fixed_points (1d.array): List of liquid mole fractions at fixed points for component 0</p>
+</dd>
+<dt>Returns:</dt><dd><p>x_comp (1d.array): Array for the liquid mole fractions of component 0 at each stage
+y_comp (1d.array): Array for the vapor mole fractions of component 0 at each stage
+N (int): number of stages in the column</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: if mole fractions move outide of the physically real range [0,1]
+ValueError: if the number of components is not 2
+ValueError: if ax_num is not equal to 0, 1, or 2.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationBinary.DistillationModelBinary.find_rect_fixedpoints_binary">
+<span class="sig-name descname"><span class="pre">find_rect_fixedpoints_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationBinary.DistillationModelBinary.find_rect_fixedpoints_binary" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate fixed points in the rectifying section.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>n (int): number of steps toward convergence (typically use n=30)</p>
+</dd>
+<dt>Returns:</dt><dd><p>x0_values, y0_values (1d.array): Arrays for the liquid and vapor mole fractions of component 0 at the fixed points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationBinary.DistillationModelBinary.find_strip_fixedpoints_binary">
+<span class="sig-name descname"><span class="pre">find_strip_fixedpoints_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationBinary.DistillationModelBinary.find_strip_fixedpoints_binary" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate fixed points in the stripping section.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>n (int): number of steps toward convergence (typically use n=30)</p>
+</dd>
+<dt>Returns:</dt><dd><p>x0_values, y0_values (1d.array): Arrays for the liquid and vapor mole fractions of
+the most volatile component 0 at the fixed points</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationBinary.DistillationModelBinary.plot_distil_binary">
+<span class="sig-name descname"><span class="pre">plot_distil_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationBinary.DistillationModelBinary.plot_distil_binary" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the full distillation column for binary mixtures
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The graphical output for a demo in interactive examples is produced</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: if the number of components is not 2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationBinary.DistillationModelBinary.plot_distil_rect_binary">
+<span class="sig-name descname"><span class="pre">plot_distil_rect_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rect_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Rectifying</span> <span class="pre">Section'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationBinary.DistillationModelBinary.plot_distil_rect_binary" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the rectifying section plot
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.
+rect_title (string): title name</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The graphical output for a demo in interactive examples is produced</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: if the number of components is not 2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationBinary.DistillationModelBinary.plot_distil_strip_binary">
+<span class="sig-name descname"><span class="pre">plot_distil_strip_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationBinary.DistillationModelBinary.plot_distil_strip_binary" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the stripping section plot
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The graphical output for a demo in interactive examples is produced</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-distillation.DistillationDoubleFeed">
+<span id="distillation-distillationdoublefeed-module"></span><h2>distillation.DistillationDoubleFeed module<a class="headerlink" href="#module-distillation.DistillationDoubleFeed" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distillation.DistillationDoubleFeed.</span></span><span class="sig-name descname"><span class="pre">DistillationModelDoubleFeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermo_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="thermo_models.html#thermo_models.VLEModelBaseClass.VLEModel" title="thermo_models.VLEModelBaseClass.VLEModel"><span class="pre">VLEModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">Fr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xFL</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xFU</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xD</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xB</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boil_up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qL</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#distillation.DistillationModel.DistillationModel" title="distillation.DistillationModel.DistillationModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistillationModel</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.change_fr">
+<span class="sig-name descname"><span class="pre">change_fr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_fr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.change_fr" title="Permalink to this definition"></a></dt>
+<dd><p>This method updates all parameter which depend on the Feed Ratio</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_equib_stages">
+<span class="sig-name descname"><span class="pre">compute_equib_stages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_equib_stages" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_middle_stages">
+<span class="sig-name descname"><span class="pre">compute_middle_stages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_point</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_middle_stages" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate the compositions at each stage in the middle section of the column
+Args:</p>
+<blockquote>
+<div><p>Start_point (int): Counting from the bottom of the column, the stage number on the stripping section 
+at which the feed is introduced to begin the middle section</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>As an example, this method can be called with the following statement:
+x_middle_comp = self.compute_middle_stages(start_point = 5)[0]
+The function produced an array of compositions at each stage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_rectifying_stages">
+<span class="sig-name descname"><span class="pre">compute_rectifying_stages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_rectifying_stages" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate the compositions at each stage in the rectifying section of the column
+Args:</p>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>As an example, this method can be called with the following statement:
+x_rect_comp = self.compute_rectifying_stages()[0]
+The function produced an array of compositions at each stage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_stripping_stages">
+<span class="sig-name descname"><span class="pre">compute_stripping_stages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.compute_stripping_stages" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate the compositions at each stage in the stripping section of the column
+Args:</p>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>As an example, this method can be called with the following statement:
+x_strip_comp = self.compute_stripping_stages()[0]
+The function produced an array of compositions at each stage</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.middle_step_x_to_y">
+<span class="sig-name descname"><span class="pre">middle_step_x_to_y</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_m_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.middle_step_x_to_y" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate y in the middle section of the distillation column from given x.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>x_m_j (np.ndarray): Mole fraction of each component in the liquid phase in the middle section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Mole fraction of each component in the vapor phase in the rectifying section that corresponds to x_r_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.middle_step_y_to_x">
+<span class="sig-name descname"><span class="pre">middle_step_y_to_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_m_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.middle_step_y_to_x" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate y in the middle section of the distillation column from given y.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>y_m_j (np.ndarray): Mole fraction of each component in the vapor phase in the middle section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Mole fraction of each component in the vapor phase in the rectifying section that corresponds to x_r_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_distil">
+<span class="sig-name descname"><span class="pre">plot_distil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_fixed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_distil" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_mb">
+<span class="sig-name descname"><span class="pre">plot_mb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_mb" title="Permalink to this definition"></a></dt>
+<dd><p>This method outputs a graphical depiction for a demo of column feasibility
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Output:</dt><dd><p>Graph showing the inlet compositions connected with mass balance lines</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_middle_comp">
+<span class="sig-name descname"><span class="pre">plot_middle_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">middle_start</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_middle_comp" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the middle section plot
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.
+middle_start (int): Stage number where stripping section changes to middle sectiom</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The graphical output for a demo in interactive examples is produced</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_rect_comp">
+<span class="sig-name descname"><span class="pre">plot_rect_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_rect_comp" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the rectifying section plot
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The graphical output for a demo in interactive examples is produced</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_rect_strip_comp">
+<span class="sig-name descname"><span class="pre">plot_rect_strip_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">middle_start</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_rect_strip_comp" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the distillation column with all 3 sections included
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The graphical output for a demo in interactive examples is produced</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_strip_comp">
+<span class="sig-name descname"><span class="pre">plot_strip_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.plot_strip_comp" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the stripping section plot
+Args:</p>
+<blockquote>
+<div><p>ax (matplotlib.axes.Axes): The axis on which to plot the data.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The graphical output for a demo in interactive examples is produced</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_Fr">
+<span class="sig-name descname"><span class="pre">set_Fr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Fr_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_Fr" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_r">
+<span class="sig-name descname"><span class="pre">set_r</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_r" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the reflux ratio and recalculates the boil-up ratio based on the new reflux ratio.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>r_new (float): New reflux ratio to be set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xB">
+<span class="sig-name descname"><span class="pre">set_xB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xB_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xB" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the bottom product composition and recalculates the boil-up ratio based on the new bottom product composition.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>xB_new (np.ndarray): New mole fraction array of bottom product composition.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xD">
+<span class="sig-name descname"><span class="pre">set_xD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xD_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xD" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the distillate composition and recalculates the boil-up ratio based on the new distillate composition.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>xD_new (np.ndarray): New mole fraction array of distillate composition.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xFL">
+<span class="sig-name descname"><span class="pre">set_xFL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xFL_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xFL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xFU">
+<span class="sig-name descname"><span class="pre">set_xFU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xFU_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_xFU" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_zF">
+<span class="sig-name descname"><span class="pre">set_zF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zF_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.set_zF" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.update_boilup">
+<span class="sig-name descname"><span class="pre">update_boilup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationDoubleFeed.DistillationModelDoubleFeed.update_boilup" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-distillation.DistillationModel">
+<span id="distillation-distillationmodel-module"></span><h2>distillation.DistillationModel module<a class="headerlink" href="#module-distillation.DistillationModel" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distillation.DistillationModel.</span></span><span class="sig-name descname"><span class="pre">DistillationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermo_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="thermo_models.html#thermo_models.VLEModelBaseClass.VLEModel" title="thermo_models.VLEModelBaseClass.VLEModel"><span class="pre">VLEModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">xF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xD</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xB</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boil_up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.change_r">
+<span class="sig-name descname"><span class="pre">change_r</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_r</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.change_r" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the reflux ratio and recalculates the boil-up ratio based on the new reflux ratio.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>new_r (float): New reflux ratio to be set.</p>
+</dd>
+<dt>Returns:</dt><dd><p>DistillationModel: Self, with updated reflux and boil-up ratios.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.compute_equib">
+<span class="sig-name descname"><span class="pre">compute_equib</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.compute_equib" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the equilibrium stages in the distillation column by iterating over a range of compositions.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>tuple: A tuple containing np.ndarrays of x (liquid phase composition), y (vapor phase composition), and temperature for each stage.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.rectifying_step_xtoy">
+<span class="sig-name descname"><span class="pre">rectifying_step_xtoy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_r_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.rectifying_step_xtoy" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate y in the rectifying section of the distillation column from given x.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>x_r_j (np.ndarray): Mole fraction of each component in the liquid phase in the rectifying section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Mole fraction of each component in the vapor phase in the rectifying section that corresponds to x_r_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.rectifying_step_ytox">
+<span class="sig-name descname"><span class="pre">rectifying_step_ytox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_r_j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.rectifying_step_ytox" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate x in the rectifying section of the distillation column from given y.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>y_r_j (np.ndarray): Mole fraction of each component in the vapor phase in the rectifying section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Mole fraction of each component in the liquid phase in the rectifying section which corresponds to y_r_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.set_r">
+<span class="sig-name descname"><span class="pre">set_r</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.set_r" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the reflux ratio and recalculates the boil-up ratio based on the new reflux ratio.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>r_new (float): New reflux ratio to be set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.set_xB">
+<span class="sig-name descname"><span class="pre">set_xB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xB_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.set_xB" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the bottom product composition and recalculates the boil-up ratio based on the new bottom product composition.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>xB_new (np.ndarray): New mole fraction array of bottom product composition.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.set_xD">
+<span class="sig-name descname"><span class="pre">set_xD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xD_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.set_xD" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the distillate composition and recalculates the boil-up ratio based on the new distillate composition.</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><p>xD_new (np.ndarray): New mole fraction array of distillate composition.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.stripping_step_xtoy">
+<span class="sig-name descname"><span class="pre">stripping_step_xtoy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_s_j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.stripping_step_xtoy" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate y in the stripping section of the distillation column from given x.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>x_s_j (np.ndarray): Mole fraction of each component in the liquid phase in the stripping section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Mole fraction of each component in the vapor phase in the stripping section.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationModel.DistillationModel.stripping_step_ytox">
+<span class="sig-name descname"><span class="pre">stripping_step_ytox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_s_j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationModel.DistillationModel.stripping_step_ytox" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate x in the stripping section of the distillation column from given y.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>y_s_j (np.ndarray): Mole fraction of each component in the vapor phase in the stripping section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Mole fraction of each component in the liquid phase in the stripping section that corresponds to y_s_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-distillation.DistillationSingleFeed">
+<span id="distillation-distillationsinglefeed-module"></span><h2>distillation.DistillationSingleFeed module<a class="headerlink" href="#module-distillation.DistillationSingleFeed" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distillation.DistillationSingleFeed.</span></span><span class="sig-name descname"><span class="pre">DistillationModelSingleFeed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermo_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="thermo_models.html#thermo_models.VLEModelBaseClass.VLEModel" title="thermo_models.VLEModelBaseClass.VLEModel"><span class="pre">VLEModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">xF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xD</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xB</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boil_up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.compute_equib">
+<span class="sig-name descname"><span class="pre">compute_equib</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.compute_equib" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.rectifying_step_xtoy">
+<span class="sig-name descname"><span class="pre">rectifying_step_xtoy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_r_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.rectifying_step_xtoy" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate y in the rectifying section of the distillation column from given x.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>x_r_j (np.ndarray): Mole fraction of each component in the liquid phase in the rectifying section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: Mole fraction of each component in the vapor phase in the rectifying section that corresponds to x_r_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.rectifying_step_ytox">
+<span class="sig-name descname"><span class="pre">rectifying_step_ytox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_r_j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.rectifying_step_ytox" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate x in the rectifying section of the distillation column from given y.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>y_r_j (float): Mole fraction of each component in the vapor phase in the rectifying section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>float: Mole fraction of each component in the liquid phase in the rectifying section which corresponds to y_r_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_r">
+<span class="sig-name descname"><span class="pre">set_r</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_r" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_xB">
+<span class="sig-name descname"><span class="pre">set_xB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xB_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_xB" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_xD">
+<span class="sig-name descname"><span class="pre">set_xD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xD_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_xD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_xF">
+<span class="sig-name descname"><span class="pre">set_xF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xF_new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.set_xF" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.stripping_step_xtoy">
+<span class="sig-name descname"><span class="pre">stripping_step_xtoy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_s_j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.stripping_step_xtoy" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate y in the stripping section of the distillation column from given x.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>x_s_j (float): Mole fraction of each component in the liquid phase in the stripping section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>float: Mole fraction of each component in the vapor phase in the stripping section.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationSingleFeed.DistillationModelSingleFeed.stripping_step_ytox">
+<span class="sig-name descname"><span class="pre">stripping_step_ytox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_s_j</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed.stripping_step_ytox" title="Permalink to this definition"></a></dt>
+<dd><p>Method to calculate x in the stripping section of the distillation column from given y.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>y_s_j (float): Mole fraction of each component in the vapor phase in the stripping section.</p>
+</dd>
+<dt>Returns:</dt><dd><p>float: Mole fraction of each component in the liquid phase in the stripping section that corresponds to y_s_j.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-distillation.DistillationTernary">
+<span id="distillation-distillationternary-module"></span><h2>distillation.DistillationTernary module<a class="headerlink" href="#module-distillation.DistillationTernary" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="distillation.DistillationTernary.DistillationModelTernary">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distillation.DistillationTernary.</span></span><span class="sig-name descname"><span class="pre">DistillationModelTernary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermo_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="thermo_models.html#thermo_models.VLEModelBaseClass.VLEModel" title="thermo_models.VLEModelBaseClass.VLEModel"><span class="pre">VLEModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">xF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xD</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xB</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boil_up</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationTernary.DistillationModelTernary" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#distillation.DistillationSingleFeed.DistillationModelSingleFeed" title="distillation.DistillationSingleFeed.DistillationModelSingleFeed"><code class="xref py py-class docutils literal notranslate"><span class="pre">DistillationModelSingleFeed</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationTernary.DistillationModelTernary.compute_rectifying_stages">
+<span class="sig-name descname"><span class="pre">compute_rectifying_stages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationTernary.DistillationModelTernary.compute_rectifying_stages" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationTernary.DistillationModelTernary.compute_stripping_stages">
+<span class="sig-name descname"><span class="pre">compute_stripping_stages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationTernary.DistillationModelTernary.compute_stripping_stages" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationTernary.DistillationModelTernary.plot_mb">
+<span class="sig-name descname"><span class="pre">plot_mb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationTernary.DistillationModelTernary.plot_mb" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationTernary.DistillationModelTernary.plot_rect_comp">
+<span class="sig-name descname"><span class="pre">plot_rect_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationTernary.DistillationModelTernary.plot_rect_comp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationTernary.DistillationModelTernary.plot_rect_strip_comp">
+<span class="sig-name descname"><span class="pre">plot_rect_strip_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationTernary.DistillationModelTernary.plot_rect_strip_comp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.DistillationTernary.DistillationModelTernary.plot_strip_comp">
+<span class="sig-name descname"><span class="pre">plot_strip_comp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax:</span> <span class="pre">&lt;module</span> <span class="pre">'matplotlib.axes'</span> <span class="pre">from</span> <span class="pre">'/Applications/anaconda3/lib/python3.8/site-packages/matplotlib/axes/__init__.py'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.DistillationTernary.DistillationModelTernary.plot_strip_comp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-distillation.residue_curves">
+<span id="distillation-residue-curves-module"></span><h2>distillation.residue_curves module<a class="headerlink" href="#module-distillation.residue_curves" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">distillation.residue_curves.</span></span><span class="sig-name descname"><span class="pre">PhasePortraits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermo_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="thermo_models.html#thermo_models.VLEModelBaseClass.VLEModel" title="thermo_models.VLEModelBaseClass.VLEModel"><span class="pre">VLEModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">distil_model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#distillation.DistillationModel.DistillationModel" title="distillation.DistillationModel.DistillationModel"><span class="pre">DistillationModel</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for visualizing phase portraits and vector fields for distillation residue curves.
+Contains methods for plotting:
+- Phase vector fields showing direction and magnitude of composition change.
+- Residue curves by integrating the composition dynamics.
+- Phase portraits for stripping, rectifying, and middle (double feed) sections.
+The dynamics are determined by the provided thermo and distillation models.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.int_path">
+<span class="sig-name descname"><span class="pre">int_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxdt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.int_path" title="Permalink to this definition"></a></dt>
+<dd><p>Integrates the differential equations using the Runge-Kutta 4th order method to generate a path from an initial state over a specified span.</p>
+<p>This function calculates the state of the system at a series of points along the specified time span, using the RK4 method for numerical integration.</p>
+<p>The integration halts prematurely if the state reaches non-physical values (e.g., NaN, infinity, or outside [0, 1] bounds).</p>
+<p>Args:</p>
+<blockquote>
+<div><p>initial (np.array):</p>
+<blockquote>
+<div><p>The initial state of the system. This should be a NumPy array corresponding to the initial values of the variables being integrated.</p>
+</div></blockquote>
+<p>t_span (tuple or list):</p>
+<blockquote>
+<div><p>A 2-element sequence specifying the start and end points (inclusive) for the integration.</p>
+</div></blockquote>
+<p>num_points (int):</p>
+<blockquote>
+<div><p>The number of points at which the state is calculated, including the initial state. Determines the step size of the integration.</p>
+</div></blockquote>
+<p>dxdt (function):</p>
+<blockquote>
+<div><p>The derivative function to be integrated. This function should take the current state and time as arguments and return the derivative of the state with respect to time.</p>
+</div></blockquote>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div><p>np.array:</p>
+<blockquote>
+<div><p>An array of states representing the path of the system from the initial state, calculated at the points specified by <cite>t_span</cite> and <cite>num_points</cite>. The shape of the array is (N, M), where N is the number of successful integration steps (may be less than <cite>num_points</cite> if integration is halted) and M is the number of variables in the system.</p>
+</div></blockquote>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.int_plot_path">
+<span class="sig-name descname"><span class="pre">int_plot_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxdt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.int_plot_path" title="Permalink to this definition"></a></dt>
+<dd><p>Plots an integrated path for a batch distillation process on a given Matplotlib axis.
+This function visualizes the integration path by plotting both a continuous line and directional arrows along the path.
+Arrows are added every 7 points to indicate the direction of progression, with their orientation reflecting the integration’s direction
+(forward or reverse in time/heat).
+Args:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>ax (matplotlib.axes.Axes):</dt><dd><p>The Matplotlib axis object where the integrated path will be plotted.</p>
+</dd>
+<dt>initial (np.array):</dt><dd><p>The initial composition or state from which to start the integration.</p>
+</dd>
+<dt>t_span (tuple/list):</dt><dd><p>A 2-element sequence specifying the start and end points for the integration.</p>
+</dd>
+<dt>num_points (int):</dt><dd><p>The number of points to generate along the integrated path.</p>
+</dd>
+<dt>dxdt (function):</dt><dd><p>A function representing the differential equations to be integrated.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_middle_portrait">
+<span class="sig-name descname"><span class="pre">plot_middle_portrait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_comps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_middle_portrait" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the middle section curve on a specified Matplotlib axis by integrating over a given time span to track composition changes.</p>
+<p>This method illustrates the evolution of compositions in the middle section of a distillation process from specified starting compositions.</p>
+<p>Integration proceeds both forwards and backwards from each starting composition to map out the complete trajectory for the middle section.</p>
+<p>Parameters</p>
+<p>ax : matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>The Matplotlib axis on which the middle section curve is to be plotted.</p>
+</div></blockquote>
+<p>t_span : list or tuple</p>
+<blockquote>
+<div><p>The time span over which to integrate, denoted as [start, end]. This parameter defines the range over which the integration occurs.</p>
+</div></blockquote>
+<p>data_points : int, optional</p>
+<blockquote>
+<div><p>The number of data points to use for plotting the integration path. It dictates the resolution of the plot. Defaults to 15.</p>
+</div></blockquote>
+<p>init_comps : list of np.array, optional</p>
+<blockquote>
+<div><p>A list of initial composition arrays from which the integration starts. Each array within the list represents a specific composition point in the phase space.</p>
+</div></blockquote>
+<p>Returns</p>
+<p>None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_phase_vector_fields">
+<span class="sig-name descname"><span class="pre">plot_phase_vector_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxdt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_data_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Phase</span> <span class="pre">Vector</span> <span class="pre">Field</span> <span class="pre">with</span> <span class="pre">Magnitude</span> <span class="pre">Colored</span> <span class="pre">Arrows'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_phase_vector_fields" title="Permalink to this definition"></a></dt>
+<dd><p>Plots a phase vector field for the given dynamics function dxdt.
+The vector field shows the direction and magnitude of composition
+change at each point in the composition space. Useful for visualizing
+phase portraits and residue curve dynamics.
+Parameters
+———-
+ax : matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>Axes to plot the vector field on.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>dxdt<span class="classifier">callable</span></dt><dd><p>Dynamics function that takes a composition point
+and returns the rate of change.</p>
+</dd>
+<dt>grid_data_points<span class="classifier">int, optional</span></dt><dd><p>Number of grid points to sample.</p>
+</dd>
+<dt>title<span class="classifier">str, optional</span></dt><dd><p>Title for the plot. Defaults to ‘Phase Vector Field with Magnitude Colored Arrows’.</p>
+</dd>
+</dl>
+<p>None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_rect_portrait">
+<span class="sig-name descname"><span class="pre">plot_rect_portrait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_comps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_rect_portrait" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the rectifying curve on a specified Matplotlib axis by integrating over a given time span to track composition changes.</p>
+<p>This method illustrates the evolution of compositions in a rectifying process from specified starting compositions.</p>
+<p>Integration proceeds both forwards and backwards from each starting composition to map out the complete rectifying curve trajectory.</p>
+<p>Parameters</p>
+<p>ax : matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>The Matplotlib axis on which the rectifying curve is to be plotted.</p>
+</div></blockquote>
+<p>t_span : list or tuple</p>
+<blockquote>
+<div><p>The time span over which to integrate, denoted as [start, end]. This parameter defines the range over which the integration occurs.</p>
+</div></blockquote>
+<p>data_points : int, optional</p>
+<blockquote>
+<div><p>The number of data points to use for plotting the integration path. It dictates the resolution of the plot. Defaults to 15.</p>
+</div></blockquote>
+<p>init_comps : list of np.array, optional</p>
+<blockquote>
+<div><p>A list of initial composition arrays from which the integration starts. Each array within the list represents a specific composition point in the phase space.</p>
+</div></blockquote>
+<p>Returns</p>
+<p>None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_residue_curve">
+<span class="sig-name descname"><span class="pre">plot_residue_curve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_comps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_residue_curve" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the residue curve on a specified Matplotlib axis by integrating over a given time span to track composition changes.</p>
+<p>This method illustrates the evolution of compositions in a batch distillation process from specified starting compositions.</p>
+<p>Integration proceeds both forwards and backwards from each starting composition to map out the complete residue curve trajectory.</p>
+<p>Parameters</p>
+<p>ax : matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>The Matplotlib axis on which the residue curve is to be plotted.</p>
+</div></blockquote>
+<p>t_span : list or tuple</p>
+<blockquote>
+<div><p>The time span over which to integrate, denoted as [start, end]. This parameter defines the range over which the integration occurs.</p>
+</div></blockquote>
+<p>data_points : int, optional</p>
+<blockquote>
+<div><p>The number of data points to use for plotting the integration path. It dictates the resolution of the plot. Defaults to 15.</p>
+</div></blockquote>
+<p>init_comps : list of np.array, optional</p>
+<blockquote>
+<div><p>A list of initial composition arrays from which the integration starts.</p>
+</div></blockquote>
+<p>Returns</p>
+<p>None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_strip_portrait">
+<span class="sig-name descname"><span class="pre">plot_strip_portrait</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_comps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_strip_portrait" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the stripping curve on a specified Matplotlib axis by integrating over a given time span to track composition changes.</p>
+<p>This method illustrates the evolution of compositions in a stripping process from specified starting compositions.</p>
+<p>Integration proceeds both forwards and backwards from each starting composition to map out the complete stripping curve trajectory.</p>
+<p>Parameters</p>
+<p>ax : matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>The Matplotlib axis on which the stripping curve is to be plotted.</p>
+</div></blockquote>
+<p>t_span : list or tuple</p>
+<blockquote>
+<div><p>The time span over which to integrate, denoted as [start, end]. This parameter defines the range over which the integration occurs.</p>
+</div></blockquote>
+<p>data_points : int, optional</p>
+<blockquote>
+<div><p>The number of data points to use for plotting the integration path. It dictates the resolution of the plot. Defaults to 15.</p>
+</div></blockquote>
+<p>init_comps : list of np.array, optional</p>
+<blockquote>
+<div><p>A list of initial composition arrays from which the integration starts. Each array within the list represents a specific composition point in the phase space.</p>
+</div></blockquote>
+<p>Returns</p>
+<p>None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_vector_field_middle">
+<span class="sig-name descname"><span class="pre">plot_vector_field_middle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_data_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_vector_field_middle" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the middle section vector field.</p>
+<p>Plots a vector field showing the direction and magnitude of composition</p>
+<p>change for middle section. This illustrates the</p>
+<p>middle section process dynamics.</p>
+<p>Parameters</p>
+<p>ax: matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>Matplotlib axis to plot on.</p>
+</div></blockquote>
+<p>grid_data_points: int, optional</p>
+<blockquote>
+<div><p>Number of grid points to use in each dimension. More points means a smoother plot. Default to 20</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_vector_field_rect">
+<span class="sig-name descname"><span class="pre">plot_vector_field_rect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_data_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_vector_field_rect" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the rectifying vector field.</p>
+<p>Plots a vector field showing the direction and magnitude of composition</p>
+<p>change during for the rectifying section. This illustrates the</p>
+<p>rectifying process dynamics.</p>
+<p>Parameters</p>
+<p>ax: matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>Matplotlib axis to plot on.</p>
+</div></blockquote>
+<p>grid_data_points: int, optional</p>
+<blockquote>
+<div><p>Number of grid points to use in each dimension. More points means a smoother plot. Default to 20</p>
+</div></blockquote>
+<p>Returns</p>
+<p>None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_vector_field_residue">
+<span class="sig-name descname"><span class="pre">plot_vector_field_residue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_data_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_vector_field_residue" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the residue curve vector field.</p>
+<p>Plots a vector field showing the direction and magnitude of composition</p>
+<p>change during the residue curve calculation. This illustrates the</p>
+<p>batch distillation process dynamics.</p>
+<p>Parameters</p>
+<p>ax: matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>Matplotlib axis to plot on.</p>
+</div></blockquote>
+<p>grid_data_points: int, optional</p>
+<blockquote>
+<div><p>Number of grid points to use in each dimension. More points means a smoother plot. Default to 20</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="distillation.residue_curves.PhasePortraits.plot_vector_field_strip">
+<span class="sig-name descname"><span class="pre">plot_vector_field_strip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_data_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.PhasePortraits.plot_vector_field_strip" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the stripping vector field.
+Plots a vector field showing the direction and magnitude of composition
+change during the stripping section. This illustrates the
+stripping process dynamics.
+Parameters
+———-
+ax : matplotlib.axes.Axes</p>
+<blockquote>
+<div><p>The Matplotlib axis to plot on.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>grid_data_points<span class="classifier">int, optional</span></dt><dd><p>Number of grid points to use in each dimension. More points means
+a smoother plot. Defaults to 20.</p>
+</dd>
+</dl>
+<p>None</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="distillation.residue_curves.rk4_step">
+<span class="sig-prename descclassname"><span class="pre">distillation.residue_curves.</span></span><span class="sig-name descname"><span class="pre">rk4_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dxdt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#distillation.residue_curves.rk4_step" title="Permalink to this definition"></a></dt>
+<dd><p>Performs a single step of the Runge-Kutta 4th order method to solve ordinary differential equations.</p>
+<p>Parameters</p>
+<p>t: float</p>
+<blockquote>
+<div><p>The current time at which the step begins.</p>
+</div></blockquote>
+<p>x: np.array</p>
+<blockquote>
+<div><p>The current state of the system, represented as a NumPy array of the variables being integrated.</p>
+</div></blockquote>
+<p>dt: float</p>
+<blockquote>
+<div><p>The time step size for the integration.</p>
+</div></blockquote>
+<p>dxdt: function</p>
+<blockquote>
+<div><p>The derivative function that calculates the rate of change of the state.</p>
+</div></blockquote>
+<p>Returns</p>
+<p>np.array</p>
+<blockquote>
+<div><p>The state of the system after a time step <cite>dt</cite>, represented as a NumPy array. Returns <cite>None</cite> if an <cite>OverflowError</cite> occurs during computation.</p>
+</div></blockquote>
+<p>Raises</p>
+<p>OverflowError</p>
+<blockquote>
+<div><p>Indicates a potential numerical instability or an issue with the input values, occurring during the computation of the RK4 steps.</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="module-distillation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-distillation" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, John Edison, Kit Ao, Panwa Promtep, Kellen Roddy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>utils package &mdash; ExtDistillSim 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ExtDistillSim
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">utils package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-utils.AntoineEquation">utils.AntoineEquation module</a></li>
+<li><a class="reference internal" href="#module-utils.dictionary_approx">utils.dictionary_approx module</a></li>
+<li><a class="reference internal" href="#module-utils.fixed_point_extraction">utils.fixed_point_extraction module</a></li>
+<li><a class="reference internal" href="#module-utils.plot_csv_soln">utils.plot_csv_soln module</a></li>
+<li><a class="reference internal" href="#module-utils.rand_comp_gen">utils.rand_comp_gen module</a></li>
+<li><a class="reference internal" href="#module-utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ExtDistillSim</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utils-package">
+<h1>utils package<a class="headerlink" href="#utils-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-utils.AntoineEquation">
+<span id="utils-antoineequation-module"></span><h2>utils.AntoineEquation module<a class="headerlink" href="#module-utils.AntoineEquation" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBase10">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utils.AntoineEquation.</span></span><span class="sig-name descname"><span class="pre">AntoineEquationBase10</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBase10" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that represents the Antoine equation for calculating the saturation pressure of pure components.</p>
+<p>The Antoine equation is a semi-empirical correlation between vapor pressure and temperature for pure components.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>A (float): Antoine equation parameter.
+B (float): Antoine equation parameter.
+C (float): Antoine equation parameter.</p>
+</dd>
+<dt>Attributes:</dt><dd><p>A (float): Antoine equation parameter.
+B (float): Antoine equation parameter.
+C (float): Antoine equation parameter.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBase10.get_boiling_point">
+<span class="sig-name descname"><span class="pre">get_boiling_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_sys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBase10.get_boiling_point" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBase10.get_dPsatdT">
+<span class="sig-name descname"><span class="pre">get_dPsatdT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBase10.get_dPsatdT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBase10.get_partial_pressure">
+<span class="sig-name descname"><span class="pre">get_partial_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBase10.get_partial_pressure" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the saturation pressure at a given temperature using the Antoine equation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>Temp (np.ndarray): The temperature(s) at which to calculate the saturation pressure.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: The calculated saturation pressure(s).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBase10.get_temperature">
+<span class="sig-name descname"><span class="pre">get_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partial_pressure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBase10.get_temperature" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the temperature at a given saturation pressure using the Antoine equation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>partial_pressure (np.ndarray): The saturation pressure(s) at which to calculate the temperature.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: The calculated temperature(s).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBaseE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">utils.AntoineEquation.</span></span><span class="sig-name descname"><span class="pre">AntoineEquationBaseE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBaseE" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class that represents the Antoine equation for calculating the saturation pressure of pure components.</p>
+<p>The Antoine equation is a semi-empirical correlation between vapor pressure and temperature for pure components.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>A (float): Antoine equation parameter.
+B (float): Antoine equation parameter.
+C (float): Antoine equation parameter.</p>
+</dd>
+<dt>Attributes:</dt><dd><p>A (float): Antoine equation parameter.
+B (float): Antoine equation parameter.
+C (float): Antoine equation parameter.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBaseE.get_boiling_point">
+<span class="sig-name descname"><span class="pre">get_boiling_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_sys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBaseE.get_boiling_point" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBaseE.get_partial_pressure">
+<span class="sig-name descname"><span class="pre">get_partial_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">temp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBaseE.get_partial_pressure" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the saturation pressure at a given temperature using the Antoine equation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>Temp (np.ndarray): The temperature(s) at which to calculate the saturation pressure.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: The calculated saturation pressure(s).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="utils.AntoineEquation.AntoineEquationBaseE.get_temperature">
+<span class="sig-name descname"><span class="pre">get_temperature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partial_pressure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.AntoineEquation.AntoineEquationBaseE.get_temperature" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the temperature at a given saturation pressure using the Antoine equation.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>partial_pressure (np.ndarray): The saturation pressure(s) at which to calculate the temperature.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.ndarray: The calculated temperature(s).</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-utils.dictionary_approx">
+<span id="utils-dictionary-approx-module"></span><h2>utils.dictionary_approx module<a class="headerlink" href="#module-utils.dictionary_approx" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dictionary_approx.approximate_value">
+<span class="sig-prename descclassname"><span class="pre">utils.dictionary_approx.</span></span><span class="sig-name descname"><span class="pre">approximate_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric=&lt;function</span> <span class="pre">euclidean&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.dictionary_approx.approximate_value" title="Permalink to this definition"></a></dt>
+<dd><p>Approximates the value to search for keys in the final_dict based on a given metric (default is Euclidean).</p>
+<p>Parameters:
+- final_dict (dict): The final consolidated dictionary.
+- search_value (float): The value to search for.
+- metric (function): The distance metric to use for approximation (default is Euclidean distance).</p>
+<p>Returns:
+- closest_values (list): List of values corresponding to the closest key.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.dictionary_approx.consolidate_dicts_with_source">
+<span class="sig-prename descclassname"><span class="pre">utils.dictionary_approx.</span></span><span class="sig-name descname"><span class="pre">consolidate_dicts_with_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.dictionary_approx.consolidate_dicts_with_source" title="Permalink to this definition"></a></dt>
+<dd><p>Consolidates keys that are close enough from multiple dictionaries into a single dictionary.
+Also keeps track of which original dictionary each value came from.</p>
+<p>Parameters:
+- dict_list (list): List of dictionaries to be consolidated.
+- tolerance (float): Tolerance level for considering keys as close enough.
+- save_path (str, optional): Path to save the consolidated dictionary as a pickle file.</p>
+<p>Returns:
+- final_dict (dict): Consolidated dictionary with source indices.</p>
+<p>Structure of final_dict:
+- Key (float): The consolidated key.
+- Value (dict): A dictionary containing two lists:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>‘values’: A list of values corresponding to the key from the original dictionaries.</p></li>
+<li><p>‘source_indices’: A list of integers indicating which original dictionary each value came from.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="module-utils.fixed_point_extraction">
+<span id="utils-fixed-point-extraction-module"></span><h2>utils.fixed_point_extraction module<a class="headerlink" href="#module-utils.fixed_point_extraction" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.fixed_point_extraction.closest_key">
+<span class="sig-prename descclassname"><span class="pre">utils.fixed_point_extraction.</span></span><span class="sig-name descname"><span class="pre">closest_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.fixed_point_extraction.closest_key" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.fixed_point_extraction.get_values_within_margin">
+<span class="sig-prename descclassname"><span class="pre">utils.fixed_point_extraction.</span></span><span class="sig-name descname"><span class="pre">get_values_within_margin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_input</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">dicts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.fixed_point_extraction.get_values_within_margin" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-utils.plot_csv_soln">
+<span id="utils-plot-csv-soln-module"></span><h2>utils.plot_csv_soln module<a class="headerlink" href="#module-utils.plot_csv_soln" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plot_csv_soln.file_has_header">
+<span class="sig-prename descclassname"><span class="pre">utils.plot_csv_soln.</span></span><span class="sig-name descname"><span class="pre">file_has_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.plot_csv_soln.file_has_header" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.plot_csv_soln.plot_csv_data">
+<span class="sig-prename descclassname"><span class="pre">utils.plot_csv_soln.</span></span><span class="sig-name descname"><span class="pre">plot_csv_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">passed_csv_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failed_csv_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.plot_csv_soln.plot_csv_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-utils.rand_comp_gen">
+<span id="utils-rand-comp-gen-module"></span><h2>utils.rand_comp_gen module<a class="headerlink" href="#module-utils.rand_comp_gen" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.rand_comp_gen.create_restricted_simplex_grid">
+<span class="sig-prename descclassname"><span class="pre">utils.rand_comp_gen.</span></span><span class="sig-name descname"><span class="pre">create_restricted_simplex_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.rand_comp_gen.create_restricted_simplex_grid" title="Permalink to this definition"></a></dt>
+<dd><p>Create a grid of points for an n-dimensional simplex where sum(x_i) = 1
+and 0 &lt; x_i &lt; max_value for all i, excluding the extreme points from the start.</p>
+<p>Args:
+n_dimensions (int): The number of dimensions (or components) in the simplex.
+resolution (int): The number of intervals along each axis.
+max_value (float): The maximum value for any component in the simplex.</p>
+<p>Returns:
+list: List of tuples where each tuple represents a point in the simplex.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.rand_comp_gen.create_simplex_grid">
+<span class="sig-prename descclassname"><span class="pre">utils.rand_comp_gen.</span></span><span class="sig-name descname"><span class="pre">create_simplex_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.rand_comp_gen.create_simplex_grid" title="Permalink to this definition"></a></dt>
+<dd><p>Create a grid of points for an n-dimensional simplex where sum(x_i) = 1
+and 0 &lt; x_i &lt; 1 for all i.</p>
+<p>Args:
+n_dimensions (int): The number of dimensions (or components) in the simplex.
+resolution (int): The number of intervals along each axis.</p>
+<p>Returns:
+list: List of tuples where each tuple represents a point in the simplex.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.rand_comp_gen.generate_point_system_random_sum_to_one">
+<span class="sig-prename descclassname"><span class="pre">utils.rand_comp_gen.</span></span><span class="sig-name descname"><span class="pre">generate_point_system_random_sum_to_one</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#utils.rand_comp_gen.generate_point_system_random_sum_to_one" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a random point in a C-component system such that the sum of all components equals 1.</p>
+<p>Parameters:
+c (int): Number of components in the system.</p>
+<p>Returns:
+np.ndarray: A numpy array containing the random point.</p>
+</dd></dl>
+
+</section>
+<section id="module-utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-utils" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, John Edison, Kit Ao, Panwa Promtep, Kellen Roddy.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
