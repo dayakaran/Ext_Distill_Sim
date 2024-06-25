@@ -1,25 +1,17 @@
 import numpy as np
-import os, sys
-#
-# 
-#
-PROJECT_ROOT = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), 
-            os.pardir)
-)
-sys.path.append(PROJECT_ROOT) 
-from thermo_models.VLEModelBaseClass import *
+
 import matplotlib.pyplot as plt 
 import random as rand
+
+from thermo_models import VLEModel
 from scipy.optimize import fsolve
 from scipy.optimize import brentq
-from utils.AntoineEquation import *
-from thermo_models.RaoultsLawModel import *
 
 
 #Notes:
 #Conditions for a feasible column, profiles match at the feed stage  + no pinch point in between xB and xD
 class DistillationModel:
+    
     def __init__(self, thermo_model:VLEModel, xF: np.ndarray, xD: np.ndarray, xB: np.ndarray, reflux = None, boil_up = None, q = 1) -> None:
         """
         DistillationModel constructor

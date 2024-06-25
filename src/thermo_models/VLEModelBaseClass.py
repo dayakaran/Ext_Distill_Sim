@@ -2,13 +2,7 @@ import numpy as np
 from scipy.optimize import fsolve
 import matplotlib.pyplot as plt
 import random as rand
-import os, sys
 
-PROJECT_ROOT = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), 
-            os.pardir)
-)
-sys.path.append(PROJECT_ROOT) 
 from utils.rand_comp_gen import *
 
 class VLEModel:

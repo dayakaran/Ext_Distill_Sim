@@ -1,11 +1,5 @@
 import numpy as np
-import os, sys
-PROJECT_ROOT = os.path.abspath(os.path.join(
-            os.path.dirname(__file__),
-            os.pardir)
-)
 
-sys.path.append(PROJECT_ROOT)
 from thermo_models.VLEModelBaseClass import *
 from utils.AntoineEquation import *
 from distillation.DistillationModel import *

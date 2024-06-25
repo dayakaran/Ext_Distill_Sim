@@ -12,3 +12,6 @@ src/utils/__pycache__/*
 *$py.class
 .ipynb_checkpoints/
 *.pyc
+
+docs/_build
+docs/_build/*

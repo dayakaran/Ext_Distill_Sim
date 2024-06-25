@@ -1,4 +1,3 @@
-import os, sys
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -6,13 +5,7 @@ from scipy.optimize import fsolve
 from typing import Callable
 import random as rand
 
-PROJECT_ROOT = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), 
-            os.pardir)
-)
-sys.path.append(PROJECT_ROOT) 
-
-from thermo_models.VLEModelBaseClass  import *
+from thermo_models import VLEModel
 
 class VLEEmpiricalModelBinary(VLEModel):
     def __init__(self, comp_names, func_xtoy: Callable[[float], float]) -> None:

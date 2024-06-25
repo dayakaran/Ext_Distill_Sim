@@ -1,20 +1,12 @@
 import numpy as np
-import os, sys
-#
-# Panwa: I'm not sure how else to import these properly
-#
-PROJECT_ROOT = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), 
-            os.pardir)
-)
-sys.path.append(PROJECT_ROOT) 
-from thermo_models.VLEModelBaseClass import *
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib import axes
 import random as rand
-from utils.AntoineEquation import *
-from distillation.DistillationSingleFeed import DistillationModelSingleFeed
+
+from thermo_models import VLEModel
+from distillation import DistillationModelSingleFeed
 
 sns.set_context('talk')
 

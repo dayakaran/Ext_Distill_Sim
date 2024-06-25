@@ -1,6 +1,6 @@
 import numpy as np
 from utils.AntoineEquation import *
-from thermo_models.VLEModelBaseClass  import *
+from thermo_models import VLEModel
 
 class VanLaarModel(VLEModel):
     """

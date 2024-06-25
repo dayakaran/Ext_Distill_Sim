@@ -1,19 +1,12 @@
 import numpy as np
-import os, sys
 
-PROJECT_ROOT = os.path.abspath(os.path.join(
-            os.path.dirname(__file__), 
-            os.pardir)
-)
-sys.path.append(PROJECT_ROOT) 
-from thermo_models.VLEModelBaseClass import *
+from thermo_models import VLEModel
 import matplotlib.pyplot as plt 
 import random as rand
 from scipy.optimize import fsolve
 from scipy.optimize import brentq
-from utils.AntoineEquation import *
-from thermo_models.RaoultsLawModel import *
-from distillation.DistillationSingleFeed import DistillationModelSingleFeed
+
+from distillation import DistillationModelSingleFeed
 
 import seaborn as sns
 sns.set_context("poster")
