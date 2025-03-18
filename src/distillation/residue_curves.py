@@ -28,6 +28,33 @@ class PhasePortraits():
         self.distil_model = distil_model
         self.thermo_model = thermo_model
 
+
+
+    def get_phase_vector_fields(self, dxdt, grid_data_points=20):
+
+        x_array = [np.array(point) for point in create_restricted_simplex_grid(3, grid_data_points)]
+        vectors = np.zeros((len(x_array), 2))
+        valid_points = []
+
+        for i, x in enumerate(x_array):
+            try:
+                vector = dxdt(x)
+                vectors[i] = vector[:2]
+                if not (np.isinf(vectors[i]).any() or np.isnan(vectors[i]).any()):
+                    valid_points.append(True)
+                else:
+                    valid_points.append(False)
+            except Exception as e:
+                print(f"An error occurred at point {x}: {e}")
+                vectors[i] = np.nan
+                valid_points.append(False)
+
+        valid_x_array = [x for i, x in enumerate(x_array) if valid_points[i]]
+        valid_vectors = np.array([vectors[i] for i in range(len(vectors)) if valid_points[i]])
+
+        return valid_x_array, valid_vectors
+
+        
     def plot_phase_vector_fields(self, ax, dxdt, grid_data_points=20, title = 'Phase Vector Field with Magnitude Colored Arrows'):
         """
         Plots a phase vector field for the given dynamics function dxdt.
@@ -50,25 +77,8 @@ class PhasePortraits():
         None
         """
 
-        x_array = [np.array(point) for point in create_restricted_simplex_grid(3, grid_data_points)]
-        vectors = np.zeros((len(x_array), 2))
-        valid_points = []
-
-        for i, x in enumerate(x_array):
-            try:
-                vector = dxdt(x)
-                vectors[i] = vector[:2]
-                if not (np.isinf(vectors[i]).any() or np.isnan(vectors[i]).any()):
-                    valid_points.append(True)
-                else:
-                    valid_points.append(False)
-            except Exception as e:
-                print(f"An error occurred at point {x}: {e}")
-                vectors[i] = np.nan
-                valid_points.append(False)
-
-        valid_x_array = [x for i, x in enumerate(x_array) if valid_points[i]]
-        valid_vectors = np.array([vectors[i] for i in range(len(vectors)) if valid_points[i]])
+        valid_x_array, valid_vectors = self.get_phase_vector_fields(dxdt, grid_data_points)
+        
         magnitudes    = np.linalg.norm(valid_vectors, axis=1)
         norm          = plt.Normalize(vmin=magnitudes.min(), vmax=magnitudes.max())
         cmap          = sns.color_palette("icefire", as_cmap=True)
@@ -91,6 +101,9 @@ class PhasePortraits():
         ax.set_ylabel(self.thermo_model.comp_names[1], labelpad = 10)
         ax.set_title(title)
 
+
+
+        
     def plot_vector_field_strip(self, ax, grid_data_points=20):
         """
         Plot the stripping vector field.
@@ -130,6 +143,28 @@ class PhasePortraits():
 
         self.plot_phase_vector_fields(ax, dxdt, grid_data_points, title = "Stripping Phase Plane")
 
+
+
+    def get_vector_field_strip(self, grid_data_points=20):
+
+        def dxdt(x):
+
+            try:
+
+                return  self.distil_model.stripping_step_ytox(self.thermo_model.convert_x_to_y (x)[0][:-1]) - x
+
+            except OverflowError:
+
+                print("Overflow occurred in dxdt.")
+
+                return None
+
+        return self.get_phase_vector_fields(dxdt, grid_data_points)
+
+
+
+
+        
     def plot_vector_field_rect(self, ax, grid_data_points=20):
 
         """
@@ -190,51 +225,17 @@ class PhasePortraits():
 
         self.plot_phase_vector_fields(ax, dxdt,grid_data_points, title = "Rectifying Phase Plane")
 
-    def plot_vector_field_residue(self, ax, grid_data_points=20):
 
-        """
 
-        Plots the residue curve vector field.
 
-        Plots a vector field showing the direction and magnitude of composition
-
-        change during the residue curve calculation. This illustrates the
-
-        batch distillation process dynamics.
-
-        Parameters
-
-        ----------
-
-        ax: matplotlib.axes.Axes
-
-            Matplotlib axis to plot on.
-
-        grid_data_points: int, optional
-
-            Number of grid points to use in each dimension. More points means a smoother plot. Default to 20
-
-        """       
+    def get_vector_field_rect(self, grid_data_points=20):
 
         def dxdt(x):
 
-            """
-
-            defines the vector field for a batch distillation.
-
-            Args:
-
-                x: composition point
-
-            Returns:
-
-                np.array: vector field at point x
-
-            """
 
             try:
 
-                return x - self.thermo_model.convert_x_to_y(x_array=x)[0][:-1]
+                return self.thermo_model.convert_y_to_x ( self.distil_model.rectifying_step_xtoy(x) )[0][:-1] - x
 
             except OverflowError:
 
@@ -242,7 +243,8 @@ class PhasePortraits():
 
                 return None
 
-        self.plot_phase_vector_fields(ax,dxdt,grid_data_points, title = "Residue Phase Plane")
+        return self.get_phase_vector_fields(dxdt,grid_data_points)
+        
 
 
         
