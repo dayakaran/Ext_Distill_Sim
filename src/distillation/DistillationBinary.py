@@ -13,6 +13,7 @@ sns.set_context("poster")
 sns.set_style("ticks")
 
 class DistillationModelBinary(DistillationModelSingleFeed):
+
     def __init__(self, thermo_model:VLEModel, xF: np.ndarray, xD: np.ndarray, xB: np.ndarray, reflux = None, boil_up = None, q = 1) -> None:
         """
         DistillationModelBinary constructor 
@@ -458,3 +459,53 @@ class DistillationModelBinary(DistillationModelSingleFeed):
         ax.set_ylabel(y_label, labelpad = 10, fontsize = 22)
 
         return 
+
+
+
+    def compute_rectifying_stages(self):
+        """
+        Get stagewise compositions in rectifying section
+        """
+        
+        # Plot the fixed points from stripping line
+        x_r_fixed, y_r_fixed = self.find_rect_fixedpoints_binary(n=30)        
+        x_stages, y_stages, N_2 = self.compute_equib_stages_binary(1, x_r_fixed)
+
+        for i, x1 in enumerate(self.x_array_equib):
+            self.y_r_array[i] = self.rectifying_step_xtoy(x1)
+        
+        return x_stages, y_stages, x_r_fixed, y_r_fixed     
+    
+
+    def compute_stripping_stages(self):
+        """
+        Get stagewise compositions in stripping section
+        """
+        
+        # Plot the fixed points from stripping line
+        x_s_fixed, y_s_fixed = self.find_strip_fixedpoints_binary(n=30)
+
+        x_stages, y_stages, N_2 = self.compute_equib_stages_binary(0, x_s_fixed)
+
+        for i, x1 in enumerate(self.x_array_equib):
+            self.y_r_array[i] = self.rectifying_step_xtoy(x1)
+        
+        return x_stages, y_stages, x_s_fixed, y_s_fixed     
+
+    
+    def compute_stages(self):
+        """
+        Get stagewise compositions in stripping section
+        """
+        
+        # Plot the fixed points from stripping line
+        x_s_fixed, y_s_fixed = self.find_strip_fixedpoints_binary(n=30)
+        x_r_fixed, y_r_fixed = self.find_rect_fixedpoints_binary(n=30)
+        
+        x_stages, y_stages, N_2 = self.compute_equib_stages_binary(2, x_s_fixed + x_r_fixed)
+
+        for i, x1 in enumerate(self.x_array_equib):
+            self.y_r_array[i] = self.rectifying_step_xtoy(x1)
+        
+        return x_stages, y_stages, x_r_fixed + x_s_fixed, y_r_fixed + y_s_fixed     
+    
