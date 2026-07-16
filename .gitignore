@@ -15,3 +15,9 @@ src/utils/__pycache__/*
 
 docs/_build
 docs/_build/*
+# JupyterLite build artifacts
+_site/
+_jupyterlite/
+dist/
+build/
+*.egg-info/

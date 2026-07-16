@@ -1,0 +1,68 @@
+name: Deploy JupyterLite to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow GITHUB_TOKEN to deploy to Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install build dependencies
+        run: pip install -r requirements-jupyterlite.txt
+
+      - name: Build JupyterLite site
+        run: python tools/build_jupyterlite.py --output _site
+
+      - name: Check the Pyodide kernel extension is present
+        # NOTE: this only catches the extension being absent from the build. It does
+        # NOT catch the nastier failure mode, where the extension is present and
+        # correctly listed here but fails to load in the browser because it was built
+        # against a different @jupyterlab/coreutils than jupyterlite-core ships -- the
+        # site then builds green and opens every notebook with "No Kernel". The version
+        # pins in requirements-jupyterlite.txt are what guard against that; only a real
+        # browser can confirm it. Re-verify by hand after bumping either package.
+        run: |
+          python - <<'PY'
+          import json, sys, pathlib
+          cfg = json.loads(pathlib.Path("_site/jupyter-lite.json").read_text())
+          names = [e.get("name") for e in cfg["jupyter-config-data"].get("federated_extensions", [])]
+          required = ["@jupyterlite/pyodide-kernel-extension", "@jupyter-widgets/jupyterlab-manager"]
+          missing = [r for r in required if r not in names]
+          if missing:
+              sys.exit(f"missing federated extensions: {missing}\nfound: {names}")
+          print("federated extensions OK:", names)
+          PY
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

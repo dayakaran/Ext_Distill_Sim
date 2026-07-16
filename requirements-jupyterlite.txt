@@ -1,0 +1,18 @@
+# Build-time dependencies for the static JupyterLite site (tools/build_jupyterlite.py).
+# These are NOT runtime dependencies of the library -- see pyproject.toml for those.
+
+jupyterlite-core==0.8.1
+
+# Pinned deliberately. jupyterlite-pyodide-kernel 0.8.2 is built against
+# @jupyterlab/coreutils ^6.6.1, but the JupyterLab assets bundled in
+# jupyterlite-core 0.8.1 provide 6.6.0. The version mismatch makes the federated
+# extension fail to load at runtime, so no kernel is registered and every notebook
+# opens with "No Kernel" -- the site builds without error and is silently dead.
+# Keep these two versions in lockstep when upgrading, and re-verify in a browser.
+jupyterlite-pyodide-kernel==0.8.1
+
+# Supplies the federated extension that renders ipywidgets in the built site.
+jupyterlab_widgets
+
+# Used by the build script to produce the ext-distill-sim wheel.
+build
