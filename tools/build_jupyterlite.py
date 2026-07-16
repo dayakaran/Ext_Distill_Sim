@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -106,13 +107,44 @@ def patch_notebook(path: Path, dest: Path) -> list[str]:
     return notes
 
 
+def source_date_epoch() -> str:
+    """
+    Timestamp to bake into the wheel, taken from the last commit that touched the
+    library itself.
+
+    Wheels embed file mtimes, so an unpinned build is not reproducible: two runs
+    over identical source produce different bytes and therefore a different
+    sha256, under an unchanging filename. piplite records the wheel's hash in
+    pypi/all.json and verifies it after download, so a browser holding a cached
+    all.json from an earlier deploy fails with "Invalid checksum" against a
+    freshly built but semantically identical wheel.
+
+    Pinning SOURCE_DATE_EPOCH to the library's last commit makes the wheel a pure
+    function of the source: commits that only touch prose or docs leave the wheel
+    byte-identical, so nothing can go stale relative to it.
+    """
+    try:
+        out = subprocess.run(
+            ["git", "log", "-1", "--format=%ct", "--", "src", "pyproject.toml"],
+            cwd=REPO, check=True, capture_output=True, text=True,
+        ).stdout.strip()
+        if out:
+            return out
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        pass
+    # No git (e.g. a source tarball): fall back to a fixed epoch so the build is
+    # still deterministic rather than silently reintroducing timestamp drift.
+    return "1700000000"
+
+
 def build_wheel() -> Path:
     dist = REPO / "dist"
     for stale in dist.glob("*.whl"):
         stale.unlink()
+    env = {**os.environ, "SOURCE_DATE_EPOCH": source_date_epoch()}
     subprocess.run(
         [sys.executable, "-m", "build", "--wheel", "--outdir", str(dist)],
-        cwd=REPO, check=True, stdout=subprocess.DEVNULL,
+        cwd=REPO, check=True, stdout=subprocess.DEVNULL, env=env,
     )
     wheels = list(dist.glob("*.whl"))
     if len(wheels) != 1:
