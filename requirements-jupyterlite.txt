@@ -11,6 +11,13 @@ jupyterlite-core==0.8.1
 # Keep these two versions in lockstep when upgrading, and re-verify in a browser.
 jupyterlite-pyodide-kernel==0.8.1
 
+# Required by jupyterlite-core to copy custom content (our notebooks) into the
+# site. Without it the build fails at post_build:contents with "jupyter-server is
+# not installed. You cannot add custom content to jupyterlite." It is not a
+# declared dependency of jupyterlite-core, so it must be pinned here explicitly
+# rather than arriving transitively via jupyterlab.
+jupyter-server
+
 # Supplies the federated extension that renders ipywidgets in the built site.
 jupyterlab_widgets
 
