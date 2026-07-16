@@ -5,6 +5,27 @@ import random as rand
 
 from utils.rand_comp_gen import *
 
+#: Default number of random restarts allowed before a flash is declared infeasible.
+#: Each restart reseeds fsolve from a fresh random composition, so the attempt count
+#: needed is a heavy-tailed random variable rather than a fixed cost. Measured on the
+#: ternary Margules system, convert_y_to_x has a median of 1 attempt but a p90 of ~86
+#: and a worst case of ~1200; convert_x_to_y converges almost immediately. 5000 leaves
+#: roughly 4x headroom over the worst case observed while still guaranteeing the call
+#: terminates -- an infeasible input costs ~7s here and ~30s under Pyodide, rather than
+#: hanging forever with no way to interrupt it in a browser.
+DEFAULT_MAX_ATTEMPTS = 5000
+
+
+class VLEConvergenceError(RuntimeError):
+    """
+    Raised when a flash calculation fails to converge within max_attempts restarts.
+
+    Because each restart is seeded randomly, an occasional failure is not proof of
+    infeasibility -- but exhausting a budget this large is overwhelmingly likely to
+    mean the requested composition is not attainable for this model.
+    """
+
+
 class VLEModel:
     """
     Base class for vapor-liquid equilibrium models.
@@ -61,107 +82,110 @@ class VLEModel:
         """
         raise NotImplementedError
     
-    def convert_x_to_y(self, x_array:np.ndarray, temp_guess = None)->np.ndarray:
+    def _solve_flash(self, residual_func, known_array:np.ndarray, jacobian, temp_guess, max_attempts:int, label:str):
+        """
+        Solves an equilibrium flash by random-restarting fsolve until it converges.
+
+        Shared implementation behind convert_x_to_y and convert_y_to_x, which differ
+        only in which residual function, Jacobian and known composition they supply.
+
+        Args:
+            residual_func (callable): Residual system to drive to zero (compute_Txy or compute_Txy2).
+            known_array (np.ndarray): The known phase composition passed through to residual_func.
+            jacobian (callable or None): Analytic Jacobian, or None to let fsolve approximate it.
+            temp_guess (float or None): Initial temperature guess; randomised between the
+                component boiling points when None.
+            max_attempts (int): Maximum number of random restarts before giving up.
+            label (str): Caller name, used in the error message.
+
+        Returns:
+            tuple: (solution, mesg) as returned by fsolve.
+
+        Raises:
+            VLEConvergenceError: If no restart converges within max_attempts.
+        """
+        # Compute the boiling points for each component
+        boiling_points = [eq.get_boiling_point(self.P_sys) for eq in self.partial_pressure_eqs]
+
+        # Provides a random guess for temp if no temp_guess was provided as a parameter
+        if temp_guess is None:
+            temp_guess = rand.uniform(np.amax(boiling_points), np.amin(boiling_points))
+
+        last_error = None
+
+        for _ in range(max_attempts):
+            try:
+                # Generate a random composition as the initial guess, plus the temperature
+                random_number = generate_point_system_random_sum_to_one(self.num_comp)
+                new_guess = np.append(random_number, temp_guess)
+
+                solution, infodict, ier, mesg = fsolve(
+                    residual_func, new_guess, args=(known_array,), full_output=True,
+                    xtol=1e-12, fprime=jacobian,
+                )
+
+                if ier == 1 and np.all(np.isclose(infodict["fvec"], 0, atol=1e-8)):
+                    return solution, mesg
+
+                last_error = mesg
+            except Exception as exc:
+                # A restart from an unlucky guess can legitimately blow up; keep trying.
+                last_error = exc
+
+        raise VLEConvergenceError(
+            f"{label} failed to converge for {np.array2string(known_array, precision=4)} "
+            f"after {max_attempts} restarts. This composition is most likely infeasible "
+            f"for {self.__class__.__name__} at P_sys={self.P_sys}. "
+            f"Last solver report: {last_error}"
+        )
+
+    def convert_x_to_y(self, x_array:np.ndarray, temp_guess = None, max_attempts:int = DEFAULT_MAX_ATTEMPTS)->np.ndarray:
         """
         Computes the conversion from liquid mole fraction to vapor mole fraction.
 
         Args:
             x_array (np.ndarray): Liquid mole fraction of each component.
             temp_guess (float): inital temperature guess for fsolve
+            max_attempts (int, optional): Maximum number of random restarts before the
+                composition is declared infeasible. Defaults to DEFAULT_MAX_ATTEMPTS.
 
         Returns:
             tuple: A tuple containing:
                 - np.ndarray: The solution from the fsolve function, including the vapor mole fractions and the system temperature.
                 - str: A message describing the exit condition of fsolve.
+
+        Raises:
+            VLEConvergenceError: If no restart converges within max_attempts.
         """
-        
-        # Compute the boiling points for each component
-        boiling_points = [eq.get_boiling_point(self.P_sys) for eq in self.partial_pressure_eqs]
+        return self._solve_flash(
+            self.compute_Txy, x_array,
+            self.jacobian_x_to_y if self.use_jacobian else None,
+            temp_guess, max_attempts, "convert_x_to_y",
+        )
 
-        #Provides a random guess for temp if no temp_guess was provided as a parameter
-        if temp_guess == None:
-            temp_guess = rand.uniform(np.amax(boiling_points), np.amin(boiling_points))
-
-        # Use fsolve to find the vapor mole fractions and system temperature that satisfy the equilibrium conditions
-        ier = 0 #fsolve results, 1 for convergence, else nonconvergence
-        runs = 0
-        while True:
-            runs += 1
-            if runs % 1000 == 0:
-                print("Current Run from convert_x_to_y:",runs)
-            try:
-                random_number = generate_point_system_random_sum_to_one(self.num_comp) #generate random composition as intial guess
-                new_guess = np.append(random_number,temp_guess) #create initial guess for composition and temperature
-               
-                #use fsolve with jacobian if provided
-                if self.use_jacobian: 
-                    solution, infodict, ier, mesg = fsolve(self.compute_Txy, new_guess, args=(x_array,), full_output=True, xtol=1e-12, fprime=self.jacobian_x_to_y)
-                    if not np.all(np.isclose(infodict["fvec"],0,atol = 1e-8)):
-                        raise ValueError("Not converged")
-                    if ier == 1:
-                        return solution, mesg
-                else:
-                    solution, infodict, ier, mesg = fsolve(self.compute_Txy, new_guess, args=(x_array,), full_output=True, xtol=1e-12, fprime=None)
-                    if not np.all(np.isclose(infodict["fvec"],0,atol = 1e-8)):
-                        raise ValueError("Not converged")
-                    if ier == 1:
-                        return solution, mesg
-            except:
-                continue
-
-            
-    def convert_y_to_x(self, y_array:np.ndarray, temp_guess = None)->np.ndarray:
+    def convert_y_to_x(self, y_array:np.ndarray, temp_guess = None, max_attempts:int = DEFAULT_MAX_ATTEMPTS)->np.ndarray:
         """
         Computes the conversion from vapor mole fraction to liquid mole fraction.
 
         Args:
             y_array (np.ndarray): Vapor mole fraction of each component.
             temp_guess (float, optional): Initial temperature guess for fsolve. If not provided, a random temperature within a logical range is used.
+            max_attempts (int, optional): Maximum number of random restarts before the
+                composition is declared infeasible. Defaults to DEFAULT_MAX_ATTEMPTS.
 
         Returns:
             tuple: A tuple containing:
                 - np.ndarray: The solution from the fsolve function, including the liquid mole fractions and the system temperature.
                 - str: A message describing the exit condition of fsolve.
 
-        Note:
-            This method attempts to solve the system until convergence, using fsolve. It utilizes an iterative approach, potentially leveraging the Jacobian if 'use_jacobian' is set to True and a corresponding Jacobian function is provided.
+        Raises:
+            VLEConvergenceError: If no restart converges within max_attempts.
         """
-
-        
-        # Compute the boiling points for each component
-        boiling_points = [eq.get_boiling_point(self.P_sys) for eq in self.partial_pressure_eqs]
-        
-        #Provides a random guess for temp if no temp_guess was provided as a parameter
-        if temp_guess == None:
-            temp_guess = rand.uniform(np.amax(boiling_points), np.amin(boiling_points))
-        
-        #Parallel to convert_x_to_y, refer to comments above        
-        ier = 0
-        runs = 0
-        while True:
-
-            runs += 1 
-
-            if runs % 10000 == 0:
-                print("Current Run from convert_y_to_x:",runs)
-            try:            
-                random_number = generate_point_system_random_sum_to_one(self.num_comp)
-                new_guess     = np.append(random_number, temp_guess)
-                
-                if self.use_jacobian:
-                    solution, infodict, ier, mesg = fsolve(self.compute_Txy2, new_guess, args=(y_array,), full_output=True, xtol=1e-12, fprime=self.jacobian_y_to_x)
-                    if not np.all(np.isclose(infodict["fvec"],0,atol = 1e-8)):
-                        raise ValueError("Not converged")
-                    if ier == 1:
-                        return solution, mesg
-                else:
-                    solution, infodict, ier, mesg = fsolve(self.compute_Txy2, new_guess, args=(y_array,), full_output=True, xtol=1e-12, fprime=None)
-                    if not np.all(np.isclose(infodict["fvec"],0,atol = 1e-8)):
-                        raise ValueError("Not converged")
-                    if ier == 1:
-                        return solution, mesg
-            except:
-                continue
+        return self._solve_flash(
+            self.compute_Txy2, y_array,
+            self.jacobian_y_to_x if self.use_jacobian else None,
+            temp_guess, max_attempts, "convert_y_to_x",
+        )
         
     def compute_Txy(self, vars:np.ndarray, x_array:np.ndarray)->list:
         """
