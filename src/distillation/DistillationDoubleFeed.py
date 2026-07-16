@@ -27,7 +27,8 @@ class DistillationModelDoubleFeed(DistillationModel):
         This class is for extractive distillations using 3+ components
         Args:
             thermo_model (VLEModel): Vapor-Liquid Equilibrium (VLE) model to be used in the distillation process.
-            Fr (float): Feed ratio (moles in Feed : moles in Entrainer)
+            Fr (float): Feed ratio, F_U/F_L = (entrainer flow rate)/(feed flow rate),
+                per Eq. A1 of Knapp & Doherty (1994).
             zF (np.ndarray): Mole fraction of each component in the summation of Feed + Entrainer.
             xFL (np.ndarray): Mole fraction of each component in the feed.
             xFU (np.ndarray): Mole fraction of each component in the entrainer.
@@ -42,9 +43,11 @@ class DistillationModelDoubleFeed(DistillationModel):
         D_B  = (zF[0]-xB[0])/(xD[0]-zF[0])
         FL_B = (xD[0]-xB[0])/(Fr*(xD[0]-xFU[0])+xD[0]-xFL[0])
         
-        # assume reflux is given, boil_up is not given, and qU and qL are 1.  
-        # according to eqn 5.22
-        boil_up = ((reflux+1)*D_B)+(FL_B*(Fr*(qU-1))+(qL-1))
+        # Eq. 8 of Knapp & Doherty (1994), AIChE J 40(2):243, doi:10.1002/aic.690400206:
+        #     s = (r+1)*(D/B) + (F_L/B)*[Fr*(qU-1) + (qL-1)]
+        # Note both bracketed terms are scaled by F_L/B. Assumes reflux is given and
+        # boil_up is not; any boil_up passed by the caller is overwritten below.
+        boil_up = ((reflux+1)*D_B)+(FL_B*((Fr*(qU-1))+(qL-1)))
 
         # let self.xF = zF; self.q = qL
         super().__init__(thermo_model,zF,xD,xB,reflux)
@@ -64,7 +67,8 @@ class DistillationModelDoubleFeed(DistillationModel):
     def update_boilup(self):
         D_B  = (self.zF[0]-self.xB[0])/(self.xD[0]-self.zF[0])
         FL_B = (self.xD[0]-self.xB[0])/(self.Fr*(self.xD[0]-self.xFU[0])+self.xD[0]-self.xFL[0])
-        self.boil_up =  ((self.reflux+1)*D_B)+(FL_B*(self.Fr*(self.qU-1))+(self.qL-1))
+        # Eq. 8 of Knapp & Doherty (1994) -- see the constructor for the full form.
+        self.boil_up =  ((self.reflux+1)*D_B)+(FL_B*((self.Fr*(self.qU-1))+(self.qL-1)))
         
     def set_Fr(self, Fr_new):
         self.Fr = Fr_new
@@ -105,7 +109,9 @@ class DistillationModelDoubleFeed(DistillationModel):
         Returns:
             np.ndarray: Mole fraction of each component in the vapor phase in the rectifying section that corresponds to x_r_j.
         """
-        h = (self.Fr*(self.xD[0]-self.xB[0]))/(self.Fr*(self.xFU[0]-self.xB[0])+self.xF[0]-self.xB[0])
+        # h = F_U/D, Eq. A9 of Knapp & Doherty (1994). The second term of the
+        # denominator is the LOWER feed composition x_FL, not the overall feed z_F.
+        h = (self.Fr*(self.xD[0]-self.xB[0]))/(self.Fr*(self.xFU[0]-self.xB[0])+self.xFL[0]-self.xB[0])
         # x = block1 * y_m_k + block2 (eq 5.21a)
         block1 = (self.reflux+1+((self.qU-1)*h))/(self.reflux+(self.qU*h))
         block2 = (h*self.xFU-self.xD)/(self.reflux+self.qU*h)
@@ -122,7 +128,9 @@ class DistillationModelDoubleFeed(DistillationModel):
         Returns:
             np.ndarray: Mole fraction of each component in the vapor phase in the rectifying section that corresponds to x_r_j.
         """
-        h = (self.Fr*(self.xD[0]-self.xB[0]))/(self.Fr*(self.xFU[0]-self.xB[0])+self.xF[0]-self.xB[0])
+        # h = F_U/D, Eq. A9 of Knapp & Doherty (1994). The second term of the
+        # denominator is the LOWER feed composition x_FL, not the overall feed z_F.
+        h = (self.Fr*(self.xD[0]-self.xB[0]))/(self.Fr*(self.xFU[0]-self.xB[0])+self.xFL[0]-self.xB[0])
 
         block1 = (self.reflux+1+((self.qU-1)*h))/(self.reflux+(self.qU*h))
         block2 = (h*self.xFU-self.xD)/(self.reflux+self.qU*h)

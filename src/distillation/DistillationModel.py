@@ -39,11 +39,11 @@ class DistillationModel:
         if reflux is not None and boil_up is not None and q is None:
             self.boil_up = boil_up
             self.reflux = reflux
-            self.q = ((boil_up+1)*((xD[0]-xF[0])/(xD[0]-xF[0])))-(reflux*((xF[0]-xB[0])/(xD[0]-xB[0]))) #this one need 1 component
+            self.q = ((boil_up+1)*((xD[0]-xF[0])/(xD[0]-xB[0])))-(reflux*((xF[0]-xB[0])/(xD[0]-xB[0]))) #this one need 1 component
         elif reflux is None and boil_up is not None and q is not None:
             self.boil_up = boil_up
             self.q = q
-            self.reflux = (((boil_up+1)*((xD[0]-xF[0])/(xD[0]-xF[0]))) - self.q)/((xF[0]-xB[0])/(xD[0]-xB[0])) #this one need 1 component
+            self.reflux = (((boil_up+1)*((xD[0]-xF[0])/(xD[0]-xB[0]))) - self.q)/((xF[0]-xB[0])/(xD[0]-xB[0])) #this one need 1 component
         elif reflux is not None and boil_up is None and q is not None:
             self.reflux = reflux
             self.q = q
