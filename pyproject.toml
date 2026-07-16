@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ext-distill-sim"
+version = "0.1.0"
+description = "Interactive distillation column simulations supplementing ASPEN Plus instruction"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+authors = [
+    { name = "John Edison" },
+    { name = "Kit Ao" },
+    { name = "Panwa Promtep" },
+    { name = "Kellen Roddy" },
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "pandas",
+    "seaborn",
+]
+
+[project.urls]
+Homepage = "https://github.com/dayakaran/Ext_Distill_Sim"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+# Only the three library packages ship. Tests/, results/ and the stray
+# notebooks under src/ are deliberately excluded from the wheel.
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["thermo_models*", "distillation*", "utils*"]
+
+[tool.setuptools.package-data]
+utils = ["pickles/*.pkl"]
